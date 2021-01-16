@@ -23,8 +23,8 @@ def get_formatted_username(str: str):
 
 def create_reddit_instance():
     return praw.Reddit(
-        client_id=os.environ['REDDIT_ID'],
-        client_secret=os.environ['REDDIT_SECRET'],
+        client_id=os.environ["REDDIT_ID"],
+        client_secret=os.environ["REDDIT_SECRET"],
         user_agent="RedditBot",
     )
 

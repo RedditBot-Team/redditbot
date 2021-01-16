@@ -17,11 +17,16 @@ class Events(commands.Cog):
         config = config_ref.get().to_dict()
 
         if config["status_override"] is not None:
-            await self.bot.change_presence(status=discord.Status.online, activity=discord.Game(config["status_override"]))
+            await self.bot.change_presence(
+                status=discord.Status.online,
+                activity=discord.Game(config["status_override"]),
+            )
             return
 
-        await self.bot.change_presence(status=discord.Status.online,
-                                  activity=discord.Game(f"/help | Active in {len(self.bot.guilds)} servers"))
+        await self.bot.change_presence(
+            status=discord.Status.online,
+            activity=discord.Game(f"/help | Active in {len(self.bot.guilds)} servers"),
+        )
 
     @commands.Cog.listener
     async def on_ready(self):
