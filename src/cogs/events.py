@@ -1,8 +1,7 @@
+import discord
 from discord.ext import commands
 import firebase_admin
 from firebase_admin import firestore
-
-import util
 
 
 class Events(commands.Cog):
