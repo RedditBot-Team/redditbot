@@ -1,7 +1,7 @@
 import os
 import discord
 import logging
-from cogs import subreddit, user, subscribe, topgg
+from cogs import subreddit, user, subscribe, topgg, events
 from discord.ext import commands
 import firebase_admin
 from discord_slash import SlashCommand
@@ -29,42 +29,12 @@ async def _help(ctx):  # Defines a new "context" (ctx) command called "ping."
     ))
 
 
-async def refresh_status():
-    db = firebase_admin.firestore.client()
-    config_ref = db.document(f"meta/config")
-    config = config_ref.get().to_dict()
-
-    if config["status_override"] is not None:
-        await bot.change_presence(status=discord.Status.online, activity=discord.Game(config["status_override"]))
-        return
-
-    await bot.change_presence(status=discord.Status.online, activity=discord.Game(f"/help | Active in {len(bot.guilds)} servers"))
-
-
-@bot.event
-async def on_ready():
-    print("We have logged in as {0.user}".format(bot))
-    await refresh_status()
-
-
-@bot.event
-async def on_resumed():
-    await refresh_status()
-
-
-@bot.event
-async def on_guild_join():
-    await refresh_status()
-
-
-@bot.event
-async def on_guild_remove():
-    await refresh_status()
 
 
 bot.add_cog(subreddit.Subreddit(bot))
 bot.add_cog(user.User(bot))
 bot.add_cog(subscribe.Subscribe(bot))
+bot.add_cog(events.Events(bot))
 
 if int(os.environ['PRODUCTION']) == 1:
     bot.add_cog(topgg.TopGG(bot))
