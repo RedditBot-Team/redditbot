@@ -8,7 +8,7 @@ from discord_slash import SlashCommand
 import util
 
 bot = commands.AutoShardedBot(command_prefix="")
-slash = SlashCommand(bot, auto_register=True)
+slash = SlashCommand(bot, auto_register=True, auto_delete=True)
 
 
 intents = discord.Intents(messages=True, guilds=True)
