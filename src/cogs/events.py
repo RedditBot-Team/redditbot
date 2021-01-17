@@ -28,21 +28,21 @@ class Events(commands.Cog):
             activity=discord.Game(f"/help | Active in {len(self.bot.guilds)} servers"),
         )
 
-    @commands.Cog.listener
+    @commands.Cog.listener()
     async def on_ready(self):
         print("We have logged in as {0.user}".format(self.bot))
         print(f"With {len(self.bot.guilds)} guilds")
         await self.refresh_status()
 
-    @commands.Cog.listener
+    @commands.Cog.listener()
     async def on_resumed(self):
         await self.refresh_status()
 
-    @commands.Cog.listener
+    @commands.Cog.listener()
     async def on_guild_join(self):
         await self.refresh_status()
 
-    @commands.Cog.listener
+    @commands.Cog.listener()
     async def on_guild_remove(self):
         await self.refresh_status()
 
