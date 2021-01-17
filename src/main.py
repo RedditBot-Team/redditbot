@@ -10,7 +10,6 @@ import util
 bot = commands.AutoShardedBot(command_prefix="/")
 slash = SlashCommand(bot, auto_register=True, auto_delete=True)
 
-
 intents = discord.Intents(messages=True, guilds=True)
 
 logging.basicConfig(level=logging.INFO)
@@ -19,7 +18,7 @@ firebase_admin.initialize_app(util.make_credentials())
 
 
 @slash.slash(name="help", description="I need help!")
-async def _help(ctx):  # Defines a new "context" (ctx) command called "ping."
+async def _help(ctx):
     await ctx.send(5)
     await ctx.channel.send(
         embed=discord.Embed(
