@@ -6,7 +6,7 @@ import praw
 
 
 def make_credentials():
-    return credentials.Certificate("../redditbot-discord-firebase-adminsdk.json")
+    return credentials.Certificate("redditbot-discord-firebase-adminsdk.json")
 
 
 def get_formatted_subreddit_name(str: str):
@@ -39,6 +39,19 @@ def create_loading_embed(bot):
         url="https://top.gg/bot/437439562386505730",
     )
     return errorEmbed
+
+
+def create_delete_integration_embed(bot):
+    embed = discord.Embed(
+        title=f"To delete your stream, delete your stream's integration",
+    )
+    embed.set_author(
+        name="RedditBot",
+        icon_url=bot.user.avatar_url,
+        url="https://top.gg/bot/437439562386505730",
+    )
+    embed.set_image(url="https://i.imgur.com/fDgeCes.png")
+    return embed
 
 
 def create_cant_find_embed(bot, name: str):
