@@ -7,7 +7,7 @@ import firebase_admin
 from discord_slash import SlashCommand
 import util
 
-bot = commands.AutoShardedBot(command_prefix="")
+bot = commands.AutoShardedBot(command_prefix="/")
 slash = SlashCommand(bot, auto_register=True, auto_delete=True)
 
 
