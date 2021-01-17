@@ -25,8 +25,7 @@ class Subscribe(commands.Cog):
         self.bot.slash.remove_cog_commands(self)
 
     @cog_ext.cog_slash(
-        name="subscriptions",
-        description="live updating posts to channels"
+        name="subscriptions", description="live updating posts to channels"
     )
     async def _parent_command(self, ctx: SlashContext):
         pass
