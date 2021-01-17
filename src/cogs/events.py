@@ -16,7 +16,7 @@ class Events(commands.Cog):
         config_ref = db.document(f"meta/config")
         config = config_ref.get().to_dict()
 
-        if config["status_override"] is not None:
+        if config["status_override"]:
             await self.bot.change_presence(
                 status=discord.Status.online,
                 activity=discord.Game(config["status_override"]),
@@ -39,11 +39,11 @@ class Events(commands.Cog):
         await self.refresh_status()
 
     @commands.Cog.listener()
-    async def on_guild_join(self):
+    async def on_guild_join(self, guild):
         await self.refresh_status()
 
     @commands.Cog.listener()
-    async def on_guild_remove(self):
+    async def on_guild_remove(self, guild):
         await self.refresh_status()
 
 
