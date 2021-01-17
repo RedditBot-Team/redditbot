@@ -24,6 +24,13 @@ class Subscribe(commands.Cog):
     def cog_unload(self):
         self.bot.slash.remove_cog_commands(self)
 
+    @cog_ext.cog_slash(
+        name="subscriptions",
+        description="live updating posts to channels"
+    )
+    async def _parent_command(self, ctx: SlashContext):
+        pass
+
     @cog_ext.cog_subcommand(
         base="subscriptions",
         name="unsubscribe",

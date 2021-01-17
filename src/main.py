@@ -10,11 +10,6 @@ import util
 bot = commands.AutoShardedBot(command_prefix="")
 slash = SlashCommand(bot, auto_register=True)
 
-slash.add_slash_command(
-    name="subscriptions",
-    description="Live updating posts",
-    cmd=None
-)
 
 intents = discord.Intents(messages=True, guilds=True)
 
@@ -46,6 +41,10 @@ bot.add_cog(events.Events(bot))
 if int(os.environ["PRODUCTION"]) == 1:
     bot.add_cog(topgg.TopGG(bot))
 
+    print("Logging in as production")
+
     bot.run(os.environ["REDDITBOT_TOKEN"])
 else:
+    print("Logging in as dev")
+
     bot.run(os.environ["DEV_TOKEN"])
