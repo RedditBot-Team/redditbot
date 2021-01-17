@@ -61,8 +61,6 @@ class Subscribe(commands.Cog):
     async def _subscribe(self, ctx: SlashContext, text_channel, subreddit):
         # Make sure our token doesnt disappear
         await ctx.send(5)
-        await ctx.channel.send("Currently disabled")
-        return
 
         # USER PERMISSION CHECK
 
