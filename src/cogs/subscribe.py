@@ -24,7 +24,17 @@ class Subscribe(commands.Cog):
     def cog_unload(self):
         self.bot.slash.remove_cog_commands(self)
 
-    @cog_ext.cog_slash(
+    @cog_ext.cog_subcommand(
+        base="subscriptions",
+        name="unsubscribe",
+        description="Unsubscribe a channel from a subreddit",
+    )
+    async def _unsubscribe(self, ctx: SlashContext):
+        await ctx.send(5),
+        await ctx.channel.send(embed=util.create_delete_integration_embed(self.bot))
+
+    @cog_ext.cog_subcommand(
+        base="subscriptions",
         name="subscribe",
         description="Subscribe a channel to a subreddit, for live updating posts",
         options=[

@@ -9,6 +9,13 @@ import util
 
 bot = commands.AutoShardedBot(command_prefix="")
 slash = SlashCommand(bot, auto_register=True)
+
+slash.add_slash_command(
+    name="subscriptions",
+    description="Live updating posts",
+    cmd=None
+)
+
 intents = discord.Intents(messages=True, guilds=True)
 
 logging.basicConfig(level=logging.INFO)
