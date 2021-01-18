@@ -16,17 +16,16 @@ class Events(commands.Cog):
         config_ref = db.document(f"meta/config")
         config = config_ref.get().to_dict()
 
-        if config["status_override"]:
+        try:
             await self.bot.change_presence(
                 status=discord.Status.online,
                 activity=discord.Game(config["status_override"]),
             )
-            return
-
-        await self.bot.change_presence(
-            status=discord.Status.online,
-            activity=discord.Game(f"/help | Active in {len(self.bot.guilds)} servers"),
-        )
+        except KeyError:
+            await self.bot.change_presence(
+                status=discord.Status.online,
+                activity=discord.Game(f"/help | Active in {len(self.bot.guilds)} servers"),
+            )
 
     @commands.Cog.listener()
     async def on_ready(self):
