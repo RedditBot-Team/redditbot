@@ -40,7 +40,13 @@ async def _help(ctx):
 async def __help(ctx):
     await help(ctx)
 
-cogs = [subreddit.Subreddit(bot), user.User(bot), subscribe.Subscribe(bot), events.Events(bot)]
+
+cogs = [
+    subreddit.Subreddit(bot),
+    user.User(bot),
+    subscribe.Subscribe(bot),
+    events.Events(bot),
+]
 
 for cog in cogs:
     bot.add_cog(cog)
