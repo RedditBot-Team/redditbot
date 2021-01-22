@@ -29,15 +29,19 @@ def create_reddit_instance():
     )
 
 
+def set_author(embed: discord.Embed, bot: discord.client):
+    return embed.set_author(
+        name="RedditBot",
+        icon_url=bot.user.avatar_url,
+        url="https://redditbot.bwac.dev/",
+    )
+
+
 def create_loading_embed(bot):
     errorEmbed = discord.Embed(
         title=f"{bot.get_emoji(650579775433474088)} Hang on, im loading..",
     )
-    errorEmbed.set_author(
-        name="RedditBot",
-        icon_url=bot.user.avatar_url,
-        url="https://top.gg/bot/437439562386505730",
-    )
+    errorEmbed = set_author(errorEmbed, bot)
     return errorEmbed
 
 
@@ -45,11 +49,7 @@ def create_delete_integration_embed(bot):
     embed = discord.Embed(
         title=f"To delete your stream, delete your stream's integration",
     )
-    embed.set_author(
-        name="RedditBot",
-        icon_url=bot.user.avatar_url,
-        url="https://top.gg/bot/437439562386505730",
-    )
+    embed = set_author(embed, bot)
     embed.set_image(url="https://i.imgur.com/fDgeCes.png")
     return embed
 
@@ -59,11 +59,8 @@ def create_cant_find_embed(bot, name: str):
         title=f'"{name}" cant be found',
         timestamp=datetime.utcnow(),
     )
-    errorEmbed.set_author(
-        name="RedditBot",
-        icon_url=bot.user.avatar_url,
-        url="https://top.gg/bot/437439562386505730",
-    )
+    errorEmbed = set_author(errorEmbed, bot)
+
     return errorEmbed
 
 
@@ -74,7 +71,7 @@ def create_nsfw_content_embed():
     )
     errorEmbed.set_author(
         name="RedditBot",
-        url="https://top.gg/bot/437439562386505730",
+        url="https://redditbot.bwac.dev/",
     )
     return errorEmbed
 
@@ -88,11 +85,7 @@ def create_subreddit_embed(bot, subreddit, subreddit_name):
         url=f"https://reddit.com/r/{subreddit_name}",
     )
     embed.set_thumbnail(url=subreddit.icon_img)
-    embed.set_author(
-        name="RedditBot",
-        icon_url=bot.user.avatar_url,
-        url="https://top.gg/bot/437439562386505730",
-    )
+    embed = set_author(embed, bot)
     embed.set_footer(text=f"{subreddit.id} - {subreddit.fullname}")
 
     # Add some fields
@@ -116,11 +109,8 @@ def create_user_embed(bot, user, username):
         url=f"https://reddit.com/u/{username}",
     )
     embed.set_thumbnail(url=user.icon_img)
-    embed.set_author(
-        name="RedditBot",
-        icon_url=bot.user.avatar_url,
-        url="https://top.gg/bot/437439562386505730",
-    )
+    embed = set_author(embed, bot)
+
     embed.set_footer(text=f"{user.id}")
 
     embed.add_field(
