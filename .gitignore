@@ -3,3 +3,4 @@ venv/
 src/discord.log
 .enviroment
 .idea/
+*.pyc
