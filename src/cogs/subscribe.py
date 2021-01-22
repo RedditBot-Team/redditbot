@@ -125,9 +125,9 @@ class Subscribe(commands.Cog):
         await text_channel.send(
             embed=discord.Embed(
                 title=f":white_check_mark: Nice, this channel will start receiving new posts from `{subreddit_name}`",
-                description="It can take up to a minute",
+                description=f"If {subreddit_name} is a subreddit redditbot hasn't seen, before it can take up to 5 minutes",
                 timestamp=datetime.utcnow(),
-            )
+            ),
         )
 
 
