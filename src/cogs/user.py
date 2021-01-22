@@ -14,7 +14,7 @@ class User(commands.Cog):
         if not hasattr(bot, "slash"):
             # Creates new SlashCommand instance to bot if bot doesn't have.
             bot.slash = SlashCommand(
-                bot, override_type=True, auto_register=True, auto_delete=True
+                bot, override_type=True, auto_register=True
             )
         self.bot = bot
         self.bot.slash.get_cog_commands(self)

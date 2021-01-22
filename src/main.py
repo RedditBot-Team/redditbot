@@ -8,7 +8,7 @@ from discord_slash import SlashCommand
 import util
 
 bot = commands.AutoShardedBot(command_prefix="/", help_command=None)
-slash = SlashCommand(bot, auto_register=True, auto_delete=True)
+slash = SlashCommand(bot, auto_register=True)
 
 intents = discord.Intents(messages=True, guilds=True)
 
@@ -38,7 +38,7 @@ async def _help(ctx):
 @bot.command(name="help")
 async def __help(ctx):
     await help(ctx)
-    await ctx.send("If slash commands aren't working, re-add again with the correct permissions here: https://redditbot.bwac.dev/invite")
+    await ctx.send("If slash commands aren't working, re-add again with the correct permissions here: https://redditbot.bwac.dev/invite\nIf it keeps happening try again later")
 
 
 cogs = [
