@@ -40,10 +40,10 @@ bot.add_cog(events.Events(bot))
 if int(os.environ["PRODUCTION"]) == 1:
     bot.add_cog(topgg.TopGG(bot))
 
-    print("Logging in as production")
+    logging.info("Logging in as production")
 
     bot.run(os.environ["REDDITBOT_TOKEN"])
 else:
-    print("Logging in as dev")
+    logging.info("Logging in as dev")
 
     bot.run(os.environ["DEV_TOKEN"])

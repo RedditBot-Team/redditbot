@@ -1,7 +1,11 @@
+import logging
+
 import discord
 from discord.ext import commands
 import firebase_admin
 from firebase_admin import firestore
+
+logging.basicConfig(level=logging.INFO)
 
 
 class Events(commands.Cog):
@@ -29,8 +33,8 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print("We have logged in as {0.user}".format(self.bot))
-        print(f"With {len(self.bot.guilds)} guilds")
+        logging.info("We have logged in as {0.user}".format(self.bot))
+        logging.info(f"With {len(self.bot.guilds)} guilds")
         await self.refresh_status()
 
     @commands.Cog.listener()
