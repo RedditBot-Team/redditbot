@@ -18,7 +18,6 @@ firebase_admin.initialize_app(util.make_credentials())
 
 
 async def help(ctx):
-    await ctx.send(5)
     await ctx.channel.send(
         embed=discord.Embed(
             title=f"Read everything about me here",
