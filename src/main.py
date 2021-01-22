@@ -7,7 +7,7 @@ import firebase_admin
 from discord_slash import SlashCommand
 import util
 
-bot = commands.AutoShardedBot(command_prefix="/")
+bot = commands.AutoShardedBot(command_prefix="/", help_command=None)
 slash = SlashCommand(bot, auto_register=True, auto_delete=True)
 
 intents = discord.Intents(messages=True, guilds=True)
@@ -17,8 +17,7 @@ logging.basicConfig(level=logging.INFO)
 firebase_admin.initialize_app(util.make_credentials())
 
 
-@slash.slash(name="help", description="I need help!")
-async def _help(ctx):
+async def help(ctx):
     await ctx.send(5)
     await ctx.channel.send(
         embed=discord.Embed(
@@ -32,10 +31,20 @@ async def _help(ctx):
     )
 
 
-bot.add_cog(subreddit.Subreddit(bot))
-bot.add_cog(user.User(bot))
-bot.add_cog(subscribe.Subscribe(bot))
-bot.add_cog(events.Events(bot))
+@slash.slash(name="help", description="I need help!")
+async def _help(ctx):
+    await help(ctx)
+
+
+@bot.command(name="help")
+async def __help(ctx):
+    await help(ctx)
+
+cogs = [subreddit.Subreddit(bot), user.User(bot), subscribe.Subscribe(bot), events.Events(bot)]
+
+for cog in cogs:
+    bot.add_cog(cog)
+
 
 if int(os.environ["PRODUCTION"]) == 1:
     bot.add_cog(topgg.TopGG(bot))
