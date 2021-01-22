@@ -153,7 +153,7 @@ def create_submission_embed(submission):
     return embed
 
 
-def create_unpermitted_error_embed(bot, author, target):
+def create_unpermitted_error_embed(target):
     return discord.Embed(
         title=f":x: {target.name} hasn't authorized RedditBot to see their connections.\nClick here to authorize",
         description="Any account linking with RedditBot expires in 7 days, to respect your privacy,\nWe don't store anything about you.",
@@ -162,7 +162,7 @@ def create_unpermitted_error_embed(bot, author, target):
     )
 
 
-def create_visibility_zero_embed(bot, author, target):
+def create_visibility_zero_embed(target):
     return discord.Embed(
         title=f":x: {target.name}'s connected reddit account(s) is private.",
         timestamp=datetime.utcnow(),

@@ -115,7 +115,7 @@ class User(commands.Cog):
                     elif connection["visibility"] == 0:
                         await message.edit(
                             embed=util.create_visibility_zero_embed(
-                                self.bot, ctx.author, member
+                                member
                             )
                         )
                         return
@@ -157,7 +157,7 @@ class User(commands.Cog):
 
         else:
             await message.edit(
-                embed=util.create_unpermitted_error_embed(self.bot, ctx.author, member)
+                embed=util.create_unpermitted_error_embed(member)
             )
             return
 
