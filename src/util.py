@@ -158,7 +158,7 @@ def create_unpermitted_error_embed(target):
         title=f":x: {target.name} hasn't authorized RedditBot to see their connections.\nClick here to authorize",
         description="Any account linking with RedditBot expires in 7 days, to respect your privacy,\nWe don't store anything about you.",
         timestamp=datetime.utcnow(),
-        url=f"https://redditbot-discord.web.app/authenticate",
+        url=f"https://redditbot.bwac.dev/authenticate",
     )
 
 
