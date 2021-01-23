@@ -133,7 +133,7 @@ class User(commands.Cog):
                         # Check that we are safe for nsfw content
                         if user.subreddit["over_18"] and not ctx.channel.is_nsfw():
                             await message.edit(
-                                embed=util.create_nsfw_content_embed(self.bot)
+                                embed=util.create_nsfw_content_embed()
                             )
                             return
                     except:
