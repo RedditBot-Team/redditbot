@@ -13,9 +13,7 @@ class User(commands.Cog):
     def __init__(self, bot):
         if not hasattr(bot, "slash"):
             # Creates new SlashCommand instance to bot if bot doesn't have.
-            bot.slash = SlashCommand(
-                bot, override_type=True, auto_register=True
-            )
+            bot.slash = SlashCommand(bot, override_type=True, auto_register=True)
         self.bot = bot
         self.bot.slash.get_cog_commands(self)
 
@@ -132,9 +130,7 @@ class User(commands.Cog):
                     try:
                         # Check that we are safe for nsfw content
                         if user.subreddit["over_18"] and not ctx.channel.is_nsfw():
-                            await message.edit(
-                                embed=util.create_nsfw_content_embed()
-                            )
+                            await message.edit(embed=util.create_nsfw_content_embed())
                             return
                     except:
                         await message.edit(

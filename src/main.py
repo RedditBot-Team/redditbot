@@ -38,7 +38,9 @@ async def _help(ctx):
 @bot.command(name="help")
 async def __help(ctx):
     await help(ctx)
-    await ctx.send("If slash commands aren't working, re-add again with the correct permissions here: https://redditbot.bwac.dev/invite\nIf it keeps happening try again later")
+    await ctx.send(
+        "If slash commands aren't working, re-add again with the correct permissions here: https://redditbot.bwac.dev/invite\nIf it keeps happening try again later"
+    )
 
 
 cogs = [
