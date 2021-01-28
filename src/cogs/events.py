@@ -56,24 +56,26 @@ class Events(commands.Cog):
     async def on_slash_command(self, ctx):
         if random.randint(0, 4) == 0:
             await ctx.channel.send(
-                embeds=[
-                    discord.Embed(
-                        title="Enjoying redditbot? Vote please!",
-                        description="If you voted for me, my creator would really appreciate it",
-                        url="https://redditbot.bwac.dev/vote",
-                    )
-                ]
+                embed=discord.Embed(
+                    title="Enjoying redditbot? Vote please!",
+                    description="If you voted for me, my creator would really appreciate it",
+                    url="https://redditbot.bwac.dev/vote",
+                )
             )
         elif random.randint(0, 5) == 0:
             await ctx.channel.send(
-                embeds=[
-                    discord.Embed(
-                        title="Enjoying redditbot? If you can, donate please!",
-                        description="Donate here to keep it online!",
-                        url="https://opencollective.com/redditbot",
-                    )
-                ]
+                embed=discord.Embed(
+                    title="Enjoying redditbot? If you can, donate please!",
+                    description="Donate here to keep it online!",
+                    url="https://opencollective.com/redditbot",
+                )
             )
+
+    @commands.Cog.listener()
+    async def on_slash_command_error(self, ctx, ex: Exception):
+        await ctx.channel.send(
+            embed=discord.Embed(title="An error happened. Oh dear"),
+        )
 
 
 def setup(bot):
