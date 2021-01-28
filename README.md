@@ -4,7 +4,7 @@
 
 ## Inviting ReddiBot
 
-To invite ReddiBot, go to [https://redditbot-discord.web.app/invite](https://redditbot-discord.web.app/invite)
+To invite ReddiBot, go to [https://redditbot.bwac.dev/invite](https://redditbot.bwac.dev/invite)
 
 Make sure we have **Create slash commands** in your server otherwise RedditBot won't work!
 
