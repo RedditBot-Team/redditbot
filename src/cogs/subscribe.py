@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 
 import discord
@@ -9,6 +10,7 @@ from discord_slash.utils import manage_commands
 import util
 import firebase_admin
 from firebase_admin import firestore
+import requests
 
 
 class Subscribe(commands.Cog):
@@ -60,16 +62,23 @@ class Subscribe(commands.Cog):
         # Make sure our token doesnt disappear
         await ctx.send(5)
 
-        # USER PERMISSION CHECK
+        # make a loading screen
+        message = await ctx.channel.send(embed=util.create_loading_embed(self.bot))
+
+        if not ctx.guild.owner_id == ctx.author:
+            await message.edit(
+                embed=discord.Embed(
+                    title="Only a server owner can use this command",
+                    url="https://bwac.gitbook.io/redditbot/get-info/subscriptions#creating-a-stream",
+                )
+            )
+            return
 
         if not isinstance(text_channel, discord.TextChannel):
             await ctx.channel.send(
                 embed=util.create_wrong_channel_type("Text Channel", text_channel)
             )
             return
-
-        # make a loading screen
-        message = await ctx.channel.send(embed=util.create_loading_embed(self.bot))
 
         # Make sure our subreddit is formatted nicely
         # AKA remove 'r/'
