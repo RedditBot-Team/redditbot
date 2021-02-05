@@ -74,7 +74,7 @@ class Events(commands.Cog):
     @commands.Cog.listener()
     async def on_slash_command_error(self, ctx, ex: Exception):
         await ctx.channel.send(
-            embed=discord.Embed(title="An error happened. Oh dear"),
+            embed=discord.Embed(title="An error happened. Oh dear", url="https://discord.com/invite/JAzBJZp"),
         )
 
 
