@@ -100,6 +100,11 @@ class User(commands.Cog):
                 headers=headers,
                 data={},
             )
+
+            if response.status_code == 401:
+                await message.edit(embed=util.create_unpermitted_error_embed(member))
+                return
+
             multiple = 0
             for connection in response.json():
                 if connection["type"] == "reddit":
