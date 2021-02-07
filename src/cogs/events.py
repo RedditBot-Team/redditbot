@@ -54,7 +54,7 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_slash_command(self, ctx):
-        if random.randint(0, 4) == 0:
+        if random.randint(0, 5) == 0:
             await ctx.channel.send(
                 embed=discord.Embed(
                     title="Enjoying redditbot? Vote please!",
