@@ -21,8 +21,15 @@ class User(commands.Cog):
         self.bot.slash.remove_cog_commands(self)
 
     @cog_ext.cog_slash(
-        name="user",
-        description="See some info on a user",
+        name="user", description="See some info on a user"
+    )
+    async def _parent_command(self, ctx: SlashContext):
+        pass
+
+    @cog_ext.cog_subcommand(
+        name="username",
+        base="user",
+        description="See some info on a user, by their username",
         options=[
             manage_commands.create_option(
                 name="username",
@@ -32,7 +39,7 @@ class User(commands.Cog):
             )
         ],
     )
-    async def _user(self, ctx: SlashContext, username: str):
+    async def _username(self, ctx: SlashContext, username: str):
         # Make sure our token doesnt disappear
         await ctx.send(5)
 
@@ -64,9 +71,10 @@ class User(commands.Cog):
 
         await message.edit(embed=embed)
 
-    @cog_ext.cog_slash(
-        name="whois",
-        description="See some info on a members connected reddit account",
+    @cog_ext.cog_subcommand(
+        name="member",
+        base="user",
+        description="See some info on a server member's connected reddit account",
         options=[
             manage_commands.create_option(
                 name="member",
@@ -86,12 +94,12 @@ class User(commands.Cog):
         db = firebase_admin.firestore.client()
 
         doc_ref = db.collection(f"users").document(str(member.id))
-        storedUserData = doc_ref.get()
-        storedUserDict = storedUserData.to_dict()
+        stored_user_data = doc_ref.get()
+        stored_user_dict = stored_user_data.to_dict()
 
-        if storedUserData.exists:
+        if stored_user_data.exists:
             headers = {
-                "Authorization": f'Bearer {storedUserDict["access_token"]}',
+                "Authorization": f'Bearer {stored_user_dict["access_token"]}',
             }
 
             response = requests.request(
