@@ -20,9 +20,7 @@ class User(commands.Cog):
     def cog_unload(self):
         self.bot.slash.remove_cog_commands(self)
 
-    @cog_ext.cog_slash(
-        name="user", description="See some info on a user"
-    )
+    @cog_ext.cog_slash(name="user", description="See some info on a user")
     async def _parent_command(self, ctx: SlashContext):
         pass
 
