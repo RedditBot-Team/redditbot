@@ -62,14 +62,7 @@ class Events(commands.Cog):
                     url="https://redditbot.bwac.dev/vote",
                 )
             )
-        elif random.randint(0, 5) == 0:
-            await ctx.channel.send(
-                embed=discord.Embed(
-                    title="Enjoying redditbot? If you can, donate please!",
-                    description="Donate here to keep it online!",
-                    url="https://opencollective.com/redditbot",
-                )
-            )
+
 
     @commands.Cog.listener()
     async def on_slash_command_error(self, ctx, ex: Exception):
