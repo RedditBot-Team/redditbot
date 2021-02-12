@@ -110,8 +110,20 @@ class User(commands.Cog):
                 await message.edit(embed=util.create_unpermitted_error_embed(member))
                 return
 
-            multiple = 0
+            # Make sure we check for 0 connected reddit accounts
+
+            reddit_connections = []
             for connection in response.json():
+                if connection["type"] == "reddit":
+                    reddit_connections.append(connection)
+
+            if len(reddit_connections) == 0:
+                await message.delete()
+                await ctx.channel.send(f"{member.name} doesnt have any connected reddit accounts")
+                return
+
+            for connection in reddit_connections:
+                await ctx.channel.send(f"{member.name}'s connected public reddit accounts")
                 if connection["type"] == "reddit":
                     if connection["visibility"] == 0 and ctx.author == member.id:
                         await message.delete()
@@ -146,22 +158,14 @@ class User(commands.Cog):
                         await message.edit(
                             embed=util.create_cant_find_embed(self.bot, username)
                         )
-                        return
 
                     # Make user display embed
                     embed = util.create_user_embed(self.bot, user, username)
 
-                    if multiple > 0:
-                        await ctx.channel.send(embed=embed)
-                    else:
-                        await message.edit(
-                            embed=embed, content=f"{member.name}'s account(s):"
-                        )
-                    multiple = multiple + 1
+                    await ctx.channel.send(embed=embed)
 
         else:
             await message.edit(embed=util.create_unpermitted_error_embed(member))
-            return
 
 
 def setup(bot):
