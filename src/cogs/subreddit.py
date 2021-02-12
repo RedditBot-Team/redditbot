@@ -5,8 +5,7 @@ from discord_slash.utils import manage_commands
 import util
 
 
-
-class Subreddit(commands.Cog):
+class Subreddit(commands.Cog, name="Subreddit"):
     def __init__(self, bot):
         if not hasattr(bot, "slash"):
             # Creates new SlashCommand instance to bot if bot doesn't have.

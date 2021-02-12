@@ -8,7 +8,7 @@ from firebase_admin import firestore
 import util
 
 
-class User(commands.Cog):
+class User(commands.Cog, name="User"):
     def __init__(self, bot):
         if not hasattr(bot, "slash"):
             # Creates new SlashCommand instance to bot if bot doesn't have.

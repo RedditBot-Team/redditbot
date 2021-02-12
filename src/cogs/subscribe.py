@@ -12,7 +12,7 @@ from firebase_admin import firestore
 import util
 
 
-class Subscribe(commands.Cog):
+class Subscribe(commands.Cog, name="Subscribe"):
     def __init__(self, bot):
         if not hasattr(bot, "slash"):
             # Creates new SlashCommand instance to bot if bot doesn't have.

@@ -11,7 +11,7 @@ from firebase_admin import firestore
 logging.basicConfig(level=logging.INFO)
 
 
-class Events(commands.Cog):
+class Events(commands.Cog, name="Events"):
     def __init__(self, bot):
         self.bot = bot
 
