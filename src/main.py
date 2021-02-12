@@ -5,10 +5,10 @@ import discord
 import firebase_admin
 from discord.ext import commands
 from discord_slash import SlashCommand
+from jishaku.cog import Jishaku
 
 import util
 from cogs import events, subreddit, subscribe, user
-from jishaku.cog import Jishaku
 
 bot = commands.AutoShardedBot(command_prefix="/", help_command=None)
 slash = SlashCommand(bot, auto_register=True)
