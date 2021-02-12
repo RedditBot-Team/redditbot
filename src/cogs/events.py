@@ -1,9 +1,11 @@
 import logging
+import os
 import random
 
 import discord
-from discord.ext import commands
 import firebase_admin
+import requests
+from discord.ext import commands
 from firebase_admin import firestore
 
 logging.basicConfig(level=logging.INFO)

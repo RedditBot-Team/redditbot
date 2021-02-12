@@ -1,11 +1,13 @@
-import os
-import discord
 import logging
-from cogs import subreddit, user, subscribe, topgg, events
-from discord.ext import commands
+import os
+
+import discord
 import firebase_admin
+from discord.ext import commands
 from discord_slash import SlashCommand
+
 import util
+from cogs import events, subreddit, subscribe, user
 
 bot = commands.AutoShardedBot(command_prefix="/", help_command=None)
 slash = SlashCommand(bot, auto_register=True)

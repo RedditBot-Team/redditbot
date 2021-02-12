@@ -1,8 +1,7 @@
 from discord.ext import commands
-from discord_slash import cog_ext
-from discord_slash import SlashCommand
-from discord_slash import SlashContext
+from discord_slash import SlashCommand, SlashContext, cog_ext
 from discord_slash.utils import manage_commands
+
 import util
 
 guild_ids = [651533799141933079]

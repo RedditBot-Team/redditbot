@@ -1,8 +1,9 @@
 import os
 from datetime import datetime
-from firebase_admin import credentials
+
 import discord
 import praw
+from firebase_admin import credentials
 
 
 def make_credentials():
