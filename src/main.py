@@ -8,6 +8,7 @@ from discord_slash import SlashCommand
 
 import util
 from cogs import events, subreddit, subscribe, user
+from jishaku.cog import Jishaku
 
 bot = commands.AutoShardedBot(command_prefix="/", help_command=None)
 slash = SlashCommand(bot, auto_register=True)
@@ -63,5 +64,7 @@ if int(os.environ["PRODUCTION"]) == 1:
     bot.run(os.environ["REDDITBOT_TOKEN"])
 else:
     logging.info("Logging in as dev")
+
+    bot.load_extension('jishaku')
 
     bot.run(os.environ["DEV_TOKEN"])
