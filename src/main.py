@@ -56,8 +56,6 @@ for cog in cogs:
 
 
 if int(os.environ["PRODUCTION"]) == 1:
-    bot.add_cog(topgg.TopGG(bot))
-
     logging.info("Logging in as production")
 
     bot.run(os.environ["REDDITBOT_TOKEN"])
