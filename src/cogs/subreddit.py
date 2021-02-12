@@ -4,7 +4,6 @@ from discord_slash.utils import manage_commands
 
 import util
 
-guild_ids = [651533799141933079]
 
 
 class Subreddit(commands.Cog):
