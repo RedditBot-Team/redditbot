@@ -119,7 +119,9 @@ class User(commands.Cog, name="User"):
 
             if len(reddit_connections) == 0:
                 await message.delete()
-                await ctx.channel.send(f"{member.name} doesnt have any connected reddit accounts")
+                await ctx.channel.send(
+                    f"{member.name} doesnt have any connected reddit accounts"
+                )
                 return
 
             embeds = []
@@ -163,7 +165,9 @@ class User(commands.Cog, name="User"):
 
             # Looks complicated, that's because it is
             # adds an 's' if there are more than 1 account
-            await ctx.channel.send(f"{member.name}'s account{'s' if len(embeds) > 1 else ''}:")
+            await ctx.channel.send(
+                f"{member.name}'s account{'s' if len(embeds) > 1 else ''}:"
+            )
 
             for embed in embeds:
                 await ctx.channel.send(embed=embed)

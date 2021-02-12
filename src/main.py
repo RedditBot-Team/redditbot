@@ -65,6 +65,6 @@ if int(os.environ["PRODUCTION"]) == 1:
 else:
     logging.info("Logging in as dev")
 
-    bot.load_extension('jishaku')
+    bot.load_extension("jishaku")
 
     bot.run(os.environ["DEV_TOKEN"])
