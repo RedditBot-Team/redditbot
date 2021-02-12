@@ -31,6 +31,8 @@ jishaku==1.20.0.220
 msgpack==1.0.2
 multidict==5.1.0
 packaging==20.9
+praw==7.1.4
+prawcore==1.5.0
 proto-plus==1.13.0
 protobuf==3.14.0
 pyasn1==0.4.8
@@ -42,6 +44,8 @@ requests==2.25.1
 rsa==4.7
 six==1.15.0
 typing-extensions==3.7.4.3
+update-checker==0.18.0
 uritemplate==3.0.1
 urllib3==1.26.3
+websocket-client==0.57.0
 yarl==1.6.3
