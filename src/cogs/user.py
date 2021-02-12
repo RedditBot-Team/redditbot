@@ -162,8 +162,12 @@ class User(commands.Cog, name="User"):
                     # Make user display embed
                     embed = util.create_user_embed(self.bot, user, username)
 
-                    await ctx.channel.send(embed=embed)
+            # Looks complicated, that's because it is
+            # adds an 's' if there are more than 1 account
+            await ctx.channel.send(f"{member.name}'s account{'s' if len(embeds) > 1 else ''}:")
 
+            for embed in embeds:
+                await ctx.channel.send(embed=embed)
         else:
             await message.edit(embed=util.create_unpermitted_error_embed(member))
 
