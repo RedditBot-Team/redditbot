@@ -122,21 +122,19 @@ class User(commands.Cog, name="User"):
                 await ctx.channel.send(f"{member.name} doesnt have any connected reddit accounts")
                 return
 
+            embeds = []
+
             for connection in reddit_connections:
-                await ctx.channel.send(f"{member.name}'s connected public reddit accounts")
                 if connection["type"] == "reddit":
                     if connection["visibility"] == 0 and ctx.author == member.id:
-                        await message.delete()
                         await ctx.send(
                             hidden=True,
-                            content=f"Your connection `{connection['name']}` is private, so you cant use this",
+                            content=f"Your connection `{connection['name']}` is private",
                         )
-                        return
+                        continue
                     elif connection["visibility"] == 0:
-                        await message.edit(
-                            embed=util.create_visibility_zero_embed(member)
-                        )
-                        return
+                        embeds.append(util.create_visibility_zero_embed(member))
+                        continue
 
                     # Make sure our username is formatted nicely
                     # AKA remove 'u/'
@@ -152,15 +150,16 @@ class User(commands.Cog, name="User"):
                     try:
                         # Check that we are safe for nsfw content
                         if user.subreddit["over_18"] and not ctx.channel.is_nsfw():
-                            await message.edit(embed=util.create_nsfw_content_embed())
-                            return
+                            embeds.append(util.create_nsfw_content_embed())
+                            continue
                     except:
-                        await message.edit(
-                            embed=util.create_cant_find_embed(self.bot, username)
-                        )
+                        embeds.append(util.create_cant_find_embed(self.bot, username))
+                        continue
 
                     # Make user display embed
-                    embed = util.create_user_embed(self.bot, user, username)
+                    embeds.append(util.create_user_embed(self.bot, user, username))
+
+            await message.delete()
 
             # Looks complicated, that's because it is
             # adds an 's' if there are more than 1 account
