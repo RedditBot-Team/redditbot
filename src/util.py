@@ -2,7 +2,7 @@ import os
 from datetime import datetime
 
 import discord
-import praw
+import asyncpraw as praw
 from firebase_admin import credentials
 
 

@@ -44,16 +44,18 @@ class User(commands.Cog, name="User"):
         reddit = util.create_reddit_instance()
 
         # Grab our user details
-        user = reddit.redditor(username)
-
-        # Test to see if the user even exits
         try:
-            # Check that we are safe for nsfw content
-            if user.subreddit["over_18"] and not ctx.channel.is_nsfw():
-                await message.edit(embed=util.create_nsfw_content_embed())
-                return
+            user = reddit.redditor(username, fetch=True)
         except:
-            await message.edit(embed=util.create_cant_find_embed(self.bot, username))
+            # Sub doesnt exist
+            await message.edit(
+                embed=util.create_cant_find_embed(self.bot, username)
+            )
+            return
+
+        # Check that we are safe for nsfw content
+        if user.subreddit["over_18"] and not ctx.channel.is_nsfw():
+            await message.edit(embed=util.create_nsfw_content_embed())
             return
 
         # Make user display embed
@@ -139,16 +141,18 @@ class User(commands.Cog, name="User"):
                     reddit = util.create_reddit_instance()
 
                     # Grab our user details
-                    user = reddit.redditor(username)
-
-                    # Test to see if the user even exits
                     try:
-                        # Check that we are safe for nsfw content
-                        if user.subreddit["over_18"] and not ctx.channel.is_nsfw():
-                            embeds.append(util.create_nsfw_content_embed())
-                            continue
+                        user = reddit.redditor(username, fetch=True)
                     except:
-                        embeds.append(util.create_cant_find_embed(self.bot, username))
+                        # Sub doesnt exist
+                        await message.edit(
+                            embed=util.create_cant_find_embed(self.bot, username)
+                        )
+                        return
+
+                    # Check that we are safe for nsfw content
+                    if user.subreddit["over_18"] and not ctx.channel.is_nsfw():
+                        embeds.append(util.create_nsfw_content_embed())
                         continue
 
                     # Make user display embed

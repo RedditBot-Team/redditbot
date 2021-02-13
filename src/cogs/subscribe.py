@@ -77,19 +77,19 @@ class Subscribe(commands.Cog, name="Subscribe"):
         # Create our reddit instance
         reddit = util.create_reddit_instance()
 
-        # Grab our subreddit details
-        subreddit = reddit.subreddit(subreddit_name)
-
-        # Test to see if the subreddit even exits
+        # Grab our reddit details
         try:
-            # Check that we are safe for nsfw content
-            if subreddit.over18 and not text_channel.is_nsfw():
-                await message.edit(embed=util.create_nsfw_content_embed(self.bot))
-                return
+            subreddit = await reddit.subreddit(subreddit_name, fetch=True)
         except:
+            # Sub doesnt exist
             await message.edit(
                 embed=util.create_cant_find_embed(self.bot, subreddit_name)
             )
+            return
+
+        # Check that we are safe for nsfw content
+        if subreddit.over18 and not text_channel.is_nsfw():
+            await message.edit(embed=util.create_nsfw_content_embed(self.bot))
             return
 
         db = firebase_admin.firestore.client()

@@ -1,7 +1,7 @@
 from discord.ext import commands
 from discord_slash import SlashCommand, SlashContext, cog_ext
 from discord_slash.utils import manage_commands
-
+from asyncpraw import exceptions
 import util
 
 
@@ -36,18 +36,18 @@ class Subreddit(commands.Cog, name="Subreddit"):
         reddit = util.create_reddit_instance()
 
         # Grab our reddit details
-        subreddit = reddit.subreddit(subreddit_name)
-
-        # Test to see if the subreddit even exits
         try:
-            # Check that we are safe for nsfw content
-            if subreddit.over18 and not ctx.channel.is_nsfw():
-                await message.edit(embed=util.create_nsfw_content_embed())
-                return
+            subreddit = await reddit.subreddit(subreddit_name, fetch=True)
         except:
+            # Sub doesnt exist
             await message.edit(
                 embed=util.create_cant_find_embed(self.bot, subreddit_name)
             )
+            return
+
+        # Check that we are safe for nsfw content
+        if subreddit.over18 and not ctx.channel.is_nsfw():
+            await message.edit(embed=util.create_nsfw_content_embed())
             return
 
         # Make subreddit display embed
