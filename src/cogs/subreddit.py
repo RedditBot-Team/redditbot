@@ -7,14 +7,7 @@ import util
 
 class Subreddit(commands.Cog, name="Subreddit"):
     def __init__(self, bot):
-        if not hasattr(bot, "slash"):
-            # Creates new SlashCommand instance to bot if bot doesn't have.
-            bot.slash = SlashCommand(bot, override_type=True, auto_register=True)
         self.bot = bot
-        self.bot.slash.get_cog_commands(self)
-
-    def cog_unload(self):
-        self.bot.slash.remove_cog_commands(self)
 
     @cog_ext.cog_slash(
         name="subreddit",
@@ -30,10 +23,10 @@ class Subreddit(commands.Cog, name="Subreddit"):
     )
     async def _subreddit(self, ctx: SlashContext, subreddit: str):
         # Make sure our token doesnt disappear
-        await ctx.send(5)
+        await ctx.respond()
 
         # make a loading screen
-        message = await ctx.channel.send(embed=util.create_loading_embed(self.bot))
+        message = await ctx.send(embed=util.create_loading_embed(self.bot))
 
         # Make sure our subreddit name is formatted nicely
         # AKA remove 'r/'

@@ -11,7 +11,7 @@ import util
 from cogs import events, subreddit, subscribe, user
 
 bot = commands.AutoShardedBot(command_prefix="/", help_command=None)
-slash = SlashCommand(bot, auto_register=True)
+slash = SlashCommand(bot, sync_commands=True)
 
 intents = discord.Intents(messages=True, guilds=True)
 

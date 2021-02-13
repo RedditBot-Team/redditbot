@@ -10,14 +10,7 @@ import util
 
 class User(commands.Cog, name="User"):
     def __init__(self, bot):
-        if not hasattr(bot, "slash"):
-            # Creates new SlashCommand instance to bot if bot doesn't have.
-            bot.slash = SlashCommand(bot, override_type=True, auto_register=True)
         self.bot = bot
-        self.bot.slash.get_cog_commands(self)
-
-    def cog_unload(self):
-        self.bot.slash.remove_cog_commands(self)
 
     @cog_ext.cog_slash(name="user", description="See some info on a user")
     async def _parent_command(self, ctx: SlashContext):
@@ -38,10 +31,10 @@ class User(commands.Cog, name="User"):
     )
     async def _username(self, ctx: SlashContext, username: str):
         # Make sure our token doesnt disappear
-        await ctx.send(5)
+        await ctx.respond()
 
         # make a loading screen
-        message = await ctx.channel.send(embed=util.create_loading_embed(self.bot))
+        message = await ctx.send(embed=util.create_loading_embed(self.bot))
 
         # Make sure our username is formatted nicely
         # AKA remove 'u/'
@@ -83,10 +76,10 @@ class User(commands.Cog, name="User"):
     )
     async def _whois(self, ctx: SlashContext, member):
         # Make sure our token doesnt disappear
-        await ctx.send(5)
+        await ctx.respond()
 
         # make a loading screen
-        message = await ctx.channel.send(embed=util.create_loading_embed(self.bot))
+        message = await ctx.send(embed=util.create_loading_embed(self.bot))
 
         db = firebase_admin.firestore.client()
 
@@ -119,7 +112,7 @@ class User(commands.Cog, name="User"):
 
             if len(reddit_connections) == 0:
                 await message.delete()
-                await ctx.channel.send(
+                await ctx.send(
                     f"{member.name} doesnt have any connected reddit accounts"
                 )
                 return
@@ -165,12 +158,12 @@ class User(commands.Cog, name="User"):
 
             # Looks complicated, that's because it is
             # adds an 's' if there are more than 1 account
-            await ctx.channel.send(
+            await ctx.send(
                 f"{member.name}'s account{'s' if len(embeds) > 1 else ''}:"
             )
 
             for embed in embeds:
-                await ctx.channel.send(embed=embed)
+                await ctx.send(embed=embed)
         else:
             await message.edit(embed=util.create_unpermitted_error_embed(member))
 

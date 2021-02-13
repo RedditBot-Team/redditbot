@@ -12,14 +12,7 @@ import util
 
 class Subscribe(commands.Cog, name="Subscribe"):
     def __init__(self, bot):
-        if not hasattr(bot, "slash"):
-            # Creates new SlashCommand instance to bot if bot doesn't have.
-            bot.slash = SlashCommand(bot, override_type=True, auto_register=True)
         self.bot = bot
-        self.bot.slash.get_cog_commands(self)
-
-    def cog_unload(self):
-        self.bot.slash.remove_cog_commands(self)
 
     @cog_ext.cog_slash(
         name="subscriptions", description="live updating posts to channels"
@@ -33,8 +26,8 @@ class Subscribe(commands.Cog, name="Subscribe"):
         description="Unsubscribe a channel from a subreddit",
     )
     async def _unsubscribe(self, ctx: SlashContext):
-        await ctx.send(5),
-        await ctx.channel.send(embed=util.create_delete_integration_embed(self.bot))
+        await ctx.respond(5)
+        await ctx.send(embed=util.create_delete_integration_embed(self.bot))
 
     @cog_ext.cog_subcommand(
         base="subscriptions",
@@ -57,12 +50,12 @@ class Subscribe(commands.Cog, name="Subscribe"):
     )
     async def _subscribe(self, ctx: SlashContext, text_channel, subreddit):
         # Make sure our token doesnt disappear
-        await ctx.send(5)
+        await ctx.respond()
 
         # make a loading screen
-        message = await ctx.channel.send(embed=util.create_loading_embed(self.bot))
+        message = await ctx.send(embed=util.create_loading_embed(self.bot))
 
-        if not ctx.guild.owner_id == ctx.author:
+        if not ctx.guild.owner_id == ctx.author_id:
             await message.edit(
                 embed=discord.Embed(
                     title="Only a server owner can use this command",
@@ -72,7 +65,7 @@ class Subscribe(commands.Cog, name="Subscribe"):
             return
 
         if not isinstance(text_channel, discord.TextChannel):
-            await ctx.channel.send(
+            await ctx.send(
                 embed=util.create_wrong_channel_type("Text Channel", text_channel)
             )
             return
@@ -107,7 +100,7 @@ class Subscribe(commands.Cog, name="Subscribe"):
             )
         except discord.errors.Forbidden:
             await message.delete()
-            await ctx.channel.send(":x: I need the perms to manage webhooks.")
+            await ctx.send(":x: I need the perms to manage webhooks.")
             return
 
         subreddit_doc_ref = db.document(f"streams/{str(subreddit_name)}")
