@@ -65,7 +65,7 @@ class Subscribe(commands.Cog, name="Subscribe"):
             return
 
         if not isinstance(text_channel, discord.TextChannel):
-            await ctx.send(
+            await message.edit(
                 embed=util.create_wrong_channel_type("Text Channel", text_channel)
             )
             return
