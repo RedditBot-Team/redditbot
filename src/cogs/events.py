@@ -36,13 +36,12 @@ class Events(commands.Cog, name="Events"):
                 ),
             )
 
-        if os.environ["PRODUCTION"] == 1:
-            print(len(self.bot.guilds))
-            response = requests.request(
+        if int(os.environ["PRODUCTION"]) == 1:
+            requests.request(
                 "GET",
-                f"https://top.gg/api/bots/{self.bot.id}/stats",
+                f"https://top.gg/api/bots/{self.bot.user.id}/stats",
                 headers={
-                    "Authorization": f'Bot {os.environ["DBL_TOKEN"]}',
+                    "Authorization": f'{os.environ["DBL_TOKEN"]}',
                     "Content-Type": "application/x-www-form-urlencoded",
                 },
                 data=f"server_count={len(self.bot.guilds)}",
