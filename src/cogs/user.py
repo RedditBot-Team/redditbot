@@ -45,7 +45,7 @@ class User(commands.Cog, name="User"):
 
         # Grab our user details
         try:
-            user = reddit.redditor(username, fetch=True)
+            user = await reddit.redditor(username, fetch=True)
         except:
             # Sub doesnt exist
             await message.edit(
@@ -142,7 +142,7 @@ class User(commands.Cog, name="User"):
 
                     # Grab our user details
                     try:
-                        user = reddit.redditor(username, fetch=True)
+                        user = await reddit.redditor(username, fetch=True)
                     except:
                         # Sub doesnt exist
                         await message.edit(
