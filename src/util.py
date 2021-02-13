@@ -172,7 +172,7 @@ def create_visibility_zero_embed(target):
 
 def create_wrong_channel_type(wantedType, channel):
     return discord.Embed(
-        title=f':x: {channel}"s type is not "{str(wantedType)}"',
+        title=f':x: {channel} is not type "{str(wantedType)}"',
         timestamp=datetime.utcnow(),
     )
 
