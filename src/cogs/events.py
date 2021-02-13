@@ -15,9 +15,6 @@ class Events(commands.Cog, name="Events"):
     def __init__(self, bot):
         self.bot = bot
 
-    def cog_unload(self):
-        self.bot.slash.remove_cog_commands(self)
-
     async def refresh_status(self):
         db = firebase_admin.firestore.client()
         config_ref = db.document(f"meta/config")
