@@ -1,6 +1,8 @@
 aiohttp==3.7.3
 astunparse==1.6.3
 async-timeout==3.0.1
+asyncpraw==7.1.1
+asyncprawcore==1.5.1
 attrs==20.3.0
 braceexpand==0.1.6
 CacheControl==0.12.6
@@ -32,8 +34,6 @@ jishaku==1.20.0.220
 msgpack==1.0.2
 multidict==5.1.0
 packaging==20.9
-praw==7.1.4
-prawcore==1.5.0
 proto-plus==1.13.0
 protobuf==3.14.0
 pyasn1==0.4.8
@@ -48,5 +48,4 @@ typing-extensions==3.7.4.3
 update-checker==0.18.0
 uritemplate==3.0.1
 urllib3==1.26.3
-websocket-client==0.57.0
 yarl==1.6.3
