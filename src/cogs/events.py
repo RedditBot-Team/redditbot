@@ -33,17 +33,6 @@ class Events(commands.Cog, name="Events"):
                 ),
             )
 
-        if int(os.environ["PRODUCTION"]) == 1:
-            requests.request(
-                "GET",
-                f"https://top.gg/api/bots/{self.bot.user.id}/stats",
-                headers={
-                    "Authorization": f'{os.environ["DBL_TOKEN"]}',
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-                data=f"server_count={len(self.bot.guilds)}",
-            )
-
     @commands.Cog.listener()
     async def on_ready(self):
         logging.info("We have logged in as {0.user}".format(self.bot))
