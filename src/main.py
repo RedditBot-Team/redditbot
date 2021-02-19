@@ -5,7 +5,6 @@ import discord
 import firebase_admin
 from discord.ext import commands
 from discord_slash import SlashCommand
-from jishaku.cog import Jishaku
 
 import util
 from cogs import events, subreddit, subscribe, user
@@ -64,7 +63,5 @@ if int(os.environ["PRODUCTION"]) == 1:
     bot.run(os.environ["REDDITBOT_TOKEN"])
 else:
     logging.info("Logging in as dev")
-
-    bot.load_extension("jishaku")
 
     bot.run(os.environ["DEV_TOKEN"])
