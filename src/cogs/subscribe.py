@@ -103,17 +103,12 @@ class Subscribe(commands.Cog, name="Subscribe"):
             await ctx.send(":x: I need the perms to manage webhooks.")
             return
 
-        subreddit_doc_ref = db.document(f"streams/{str(subreddit_name)}")
-
-        if not subreddit_doc_ref.get().exists:
-            subreddit_doc_ref.set({})
-
-        db.document(f"streams/{str(subreddit_name)}/webhooks/{str(webhook.id)}").set(
+        db.document(f"webhooks/{str(webhook.id)}").set(
             {
-                "id": webhook.id,
                 "guild_id": webhook.guild_id,
                 "channel_id": webhook.channel_id,
                 "token": webhook.token,
+                "subreddit": subreddit_name
             }
         )
 
