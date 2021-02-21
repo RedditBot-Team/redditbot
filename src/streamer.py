@@ -142,10 +142,6 @@ class Streamer:
 
 
 if __name__ == "__main__":
-    firebase_admin.initialize_app(
-        credentials.Certificate("redditbot-discord-firebase-adminsdk.json")
-    )
-
     streamer = Streamer(
         client_id=437439562386505730,
         client_token=os.environ["REDDITBOT_TOKEN"],

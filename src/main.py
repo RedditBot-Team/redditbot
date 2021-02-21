@@ -1,6 +1,6 @@
 import logging
 import os
-
+import threading
 import discord
 import firebase_admin
 from discord.ext import commands
@@ -8,6 +8,7 @@ from discord_slash import SlashCommand
 
 import util
 from cogs import events, subreddit, subscribe, user
+import streamer
 
 bot = commands.AutoShardedBot(command_prefix="/", help_command=None)
 slash = SlashCommand(bot)
@@ -45,6 +46,18 @@ async def __help(ctx):
         "https://redditbot.bwac.dev/invite\nIf it keeps happening try again later "
     )
 
+
+streamer_instance = streamer.Streamer(
+    437439562386505730,
+    os.environ["REDDITBOT_TOKEN"],
+    os.environ["REDDIT_ID"],
+    os.environ["REDDIT_SECRET"],
+)
+
+streamer_listener = threading.Thread(
+    target=streamer_instance.listen,
+)
+# streamer_listener.start()
 
 cogs = [
     subreddit.Subreddit(bot),
