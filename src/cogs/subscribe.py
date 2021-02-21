@@ -108,7 +108,7 @@ class Subscribe(commands.Cog, name="Subscribe"):
                 "guild_id": webhook.guild_id,
                 "channel_id": webhook.channel_id,
                 "token": webhook.token,
-                "subreddit": subreddit_name
+                "subreddit": subreddit_name,
             }
         )
 

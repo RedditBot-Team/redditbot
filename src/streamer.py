@@ -45,7 +45,12 @@ class Streamer:
         self._listen_to_reddit_thread = False
         self._threads_to_kill = []
 
-        self.user = requests.request("GET", "https://discord.com/api/users/@me", headers={"Authorization": f"Bot {os.environ['REDDITBOT_TOKEN']}"}, data={}).json()
+        self.user = requests.request(
+            "GET",
+            "https://discord.com/api/users/@me",
+            headers={"Authorization": f"Bot {os.environ['REDDITBOT_TOKEN']}"},
+            data={},
+        ).json()
 
         self.streams = {}
         self.watched_subreddits = []

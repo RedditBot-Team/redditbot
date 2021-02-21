@@ -48,9 +48,7 @@ class User(commands.Cog, name="User"):
             user = await reddit.redditor(username, fetch=True)
         except:
             # Sub doesnt exist
-            await message.edit(
-                embed=util.create_cant_find_embed(self.bot, username)
-            )
+            await message.edit(embed=util.create_cant_find_embed(self.bot, username))
             return
 
         # Check that we are safe for nsfw content
@@ -162,9 +160,7 @@ class User(commands.Cog, name="User"):
 
             # Looks complicated, that's because it is
             # adds an 's' if there are more than 1 account
-            await ctx.send(
-                f"{member.name}'s account{'s' if len(embeds) > 1 else ''}:"
-            )
+            await ctx.send(f"{member.name}'s account{'s' if len(embeds) > 1 else ''}:")
 
             for embed in embeds:
                 await ctx.send(embed=embed)
