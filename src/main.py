@@ -57,7 +57,7 @@ streamer_instance = streamer.Streamer(
 streamer_listener = threading.Thread(
     target=streamer_instance.listen,
 )
-# streamer_listener.start()
+streamer_listener.start()
 
 cogs = [
     subreddit.Subreddit(bot),
