@@ -1,4 +1,5 @@
 import os
+import random
 from datetime import datetime
 
 import discord
@@ -129,28 +130,39 @@ def create_submission_embed(submission):
     # create our sub embed
     embed = discord.Embed(
         title=f"{submission.title}",
-        description=f"""{f'*Is original content*' if submission.is_original_content else f''}
-                    {f'*Is edited*' if submission.edited else f''}
-                    """,
-        timestamp=datetime.utcnow(),
+        description=f"""{f'{submission.selftext[:100]}...' if len(submission.selftext) > 100 else submission.selftext}
+                    {f'*Is original content*' if submission.is_original_content else f''}
+                    {f'*Is edited*' if submission.edited else f''}""",
+        timestamp=datetime.utcfromtimestamp(float(submission.created_utc)),
         url=f"https://reddit.com{submission.permalink}",
     )
+
     embed.set_author(
-        name=submission.author.name,
+        name=f"{submission.author.name} posted on r/{submission.subreddit.display_name}",
         icon_url=submission.author.icon_img,
         url=f"https://reddit.com/u/{submission.author.name}",
     )
-    embed.set_image(url=submission.url)
+
+    if submission.url.endswith((".gif", ".png", ".jpg", ".jpeg")):
+        embed.set_image(url=submission.url)
+
+    embed.set_footer(text=f"post id: {submission.id}")
+
+    embed.set_thumbnail(url=submission.subreddit.icon_img)
 
     # Add some fields
     embed.add_field(
         name="Upvotes",
-        value=submission.score,
+        value=f"{submission.score} (ratio {submission.upvote_ratio}%)",
     )
-    embed.add_field(
-        name="Created (UTC)",
-        value=str(datetime.utcfromtimestamp(float(submission.created_utc))),
-    )
+
+    if random.randint(0, 6) == 0:
+        embed.add_field(
+            name="Enjoy this feature?",
+            value="If you voted for me, my creator would really appreciate it\nhttps://redditbot.bwac.dev/vote",
+            inline=False,
+        )
+
     return embed
 
 
