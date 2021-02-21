@@ -23,9 +23,7 @@ class WebhookObject:
 
 
 class Streamer:
-    def __init__(
-            self, client_id, client_token, reddit_id, reddit_secret
-    ):
+    def __init__(self, client_id, client_token, reddit_id, reddit_secret):
         self.client_id = client_id
         self.client_token = client_token
         self.reddit_id = reddit_id
@@ -56,7 +54,7 @@ class Streamer:
 
     def _listen_to_reddit(self):
         for submission in self.reddit.subreddit(
-                "+".join(list(self.streams.keys()))
+            "+".join(list(self.streams.keys()))
         ).stream.submissions(skip_existing=True):
             # Quit if we have too.
             if threading.current_thread().name in self._threads_to_kill:
@@ -70,7 +68,9 @@ class Streamer:
                 "username": f"{self.user['username']} {submission.subreddit.display_name} Subscription",
             }
 
-            for webhook_object in self.streams[submission.subreddit.display_name.lower()]:
+            for webhook_object in self.streams[
+                submission.subreddit.display_name.lower()
+            ]:
                 channel_info_response = requests.request(
                     "GET",
                     f"https://discord.com/api/channels/{webhook_object.channel_id}",
@@ -100,7 +100,7 @@ class Streamer:
         doc_changes = queue.Queue()
 
         def on_snapshot(
-                doc_snapshot: dict[firestore.firestore.DocumentSnapshot], changes, read_time
+            doc_snapshot: dict[firestore.firestore.DocumentSnapshot], changes, read_time
         ):
             self.streams = {}
             for doc in doc_snapshot:
