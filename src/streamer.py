@@ -24,13 +24,12 @@ class WebhookObject:
 
 class Streamer:
     def __init__(
-        self, client_id, client_token, reddit_id, reddit_secret, skip_existing
+            self, client_id, client_token, reddit_id, reddit_secret
     ):
         self.client_id = client_id
         self.client_token = client_token
         self.reddit_id = reddit_id
         self.reddit_secret = reddit_secret
-        self.skip_existing = skip_existing
 
         # Setup
         self.reddit = praw.Reddit(
@@ -56,11 +55,9 @@ class Streamer:
         self.watched_subreddits = []
 
     def _listen_to_reddit(self):
-        print("Streaming!")
-        print(list(self.streams.keys()))
         for submission in self.reddit.subreddit(
-            "+".join(list(self.streams.keys()))
-        ).stream.submissions(skip_existing=self.skip_existing):
+                "+".join(list(self.streams.keys()))
+        ).stream.submissions(skip_existing=True):
             # Quit if we have too.
             if threading.current_thread().name in self._threads_to_kill:
                 return
@@ -73,7 +70,7 @@ class Streamer:
                 "username": f"{self.user['username']} {submission.subreddit.display_name} Subscription",
             }
 
-            for webhook_object in self.streams[submission.subreddit.display_name]:
+            for webhook_object in self.streams[submission.subreddit.display_name.lower()]:
                 channel_info_response = requests.request(
                     "GET",
                     f"https://discord.com/api/channels/{webhook_object.channel_id}",
@@ -103,15 +100,18 @@ class Streamer:
         doc_changes = queue.Queue()
 
         def on_snapshot(
-            doc_snapshot: dict[firestore.firestore.DocumentSnapshot], changes, read_time
+                doc_snapshot: dict[firestore.firestore.DocumentSnapshot], changes, read_time
         ):
             self.streams = {}
             for doc in doc_snapshot:
                 doc_dict = doc.to_dict()
-                if not doc_dict["subreddit"] in self.streams:
-                    self.streams[doc_dict["subreddit"]] = []
 
-                self.streams[doc_dict["subreddit"]].append(
+                sub = self.reddit.subreddit(doc_dict["subreddit"])
+
+                if not sub.display_name.lower() in self.streams:
+                    self.streams[sub.display_name.lower()] = []
+
+                self.streams[sub.display_name.lower()].append(
                     WebhookObject(
                         doc_dict["subreddit"],
                         doc_dict["channel_id"],
@@ -151,6 +151,5 @@ if __name__ == "__main__":
         client_token=os.environ["REDDITBOT_TOKEN"],
         reddit_id=os.environ["REDDIT_ID"],
         reddit_secret=os.environ["REDDIT_SECRET"],
-        skip_existing=os.environ["SKIP_EXISTING"],
     )
     streamer.listen()
