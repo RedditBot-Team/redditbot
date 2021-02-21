@@ -1,8 +1,10 @@
+import json
 import os
 import threading
 
 import praw
 import firebase_admin
+import requests
 from firebase_admin import firestore, credentials
 import queue
 
@@ -58,7 +60,38 @@ class Streamer:
                 print("Quitting~!")
                 return
 
-            print(submission.subreddit)
+            embed = util.create_submission_embed(submission)
+
+            payload = {
+                "embeds": [embed.to_dict()],
+                "avatar_url": f"https://cdn.discordapp.com/avatars/{self.user['id']}/{self.user['avatar']}",
+                "username": f"{self.user['username']} {submission.subreddit.display_name} Subscription",
+            }
+
+            for webhook_object in self.streams:
+                channel_info_response = requests.request(
+                    "GET",
+                    f"https://discord.com/api/channels/{webhook_object.channel_id}",
+                    headers={"Content-Type": "application/json"},
+                    data={},
+                )
+
+                if "nsfw" not in channel_info_response.json():
+                    if submission.over_18:
+                        payload["embeds"] = [util.create_nsfw_content_embed().to_dict()]
+                    elif submission.subreddit.over18:
+                        payload["embeds"] = [util.create_nsfw_content_embed().to_dict()]
+
+                response = requests.request(
+                    "POST",
+                    f"https://discord.com/api/webhooks/{webhook_object.id}/{webhook_object.to_dict()['token']}",
+                    headers={"Content-Type": "application/json"},
+                    data=json.dumps(payload),
+                )
+
+                # if response.status_code == 404:
+                #     doc_ref.document(webhook_object.id).delete()
+                #     return
 
     def listen(self):
         callback_done = threading.Event()
