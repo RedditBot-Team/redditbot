@@ -89,7 +89,9 @@ class Subscribe(commands.Cog, name="Subscribe"):
 
         # Check that we are safe for nsfw content
         if subreddit.over18 and not text_channel.is_nsfw():
-            await message.edit(embed=util.create_nsfw_content_embed(self.bot))
+            await message.delete()
+
+            await text_channel.send(embed=util.create_nsfw_content_embed(self.bot))
             return
 
         db = firebase_admin.firestore.client()
