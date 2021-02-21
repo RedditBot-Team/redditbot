@@ -1,12 +1,12 @@
 import json
 import os
 import threading
-
 import praw
 import firebase_admin
 import requests
 from firebase_admin import firestore, credentials
 import queue
+import util
 
 
 class WebhookObject:
@@ -42,22 +42,22 @@ class Streamer:
         self.db = firebase_admin.firestore.client()
         self._callback_done = threading.Event()
 
-        self._listen_to_reddit_process = None
-        self._listen_to_reddit_process_quit = False
+        self._listen_to_reddit_thread = False
+        self._threads_to_kill = []
 
-        self.streams = []
+        self.user = requests.request("GET", "https://discord.com/api/users/@me", headers={"Authorization": f"Bot {os.environ['REDDITBOT_TOKEN']}"}, data={}).json()
+
+        self.streams = {}
         self.watched_subreddits = []
 
     def _listen_to_reddit(self):
-        self._listen_to_reddit_process_quit = False
-
         print("Streaming!")
+        print(list(self.streams.keys()))
         for submission in self.reddit.subreddit(
-            "+".join(self.watched_subreddits)
+            "+".join(list(self.streams.keys()))
         ).stream.submissions(skip_existing=self.skip_existing):
             # Quit if we have too.
-            if self._listen_to_reddit_process_quit:
-                print("Quitting~!")
+            if threading.current_thread().name in self._threads_to_kill:
                 return
 
             embed = util.create_submission_embed(submission)
@@ -68,7 +68,7 @@ class Streamer:
                 "username": f"{self.user['username']} {submission.subreddit.display_name} Subscription",
             }
 
-            for webhook_object in self.streams:
+            for webhook_object in self.streams[submission.subreddit.display_name]:
                 channel_info_response = requests.request(
                     "GET",
                     f"https://discord.com/api/channels/{webhook_object.channel_id}",
@@ -84,14 +84,14 @@ class Streamer:
 
                 response = requests.request(
                     "POST",
-                    f"https://discord.com/api/webhooks/{webhook_object.id}/{webhook_object.to_dict()['token']}",
+                    f"https://discord.com/api/webhooks/{webhook_object.id}/{webhook_object.token}",
                     headers={"Content-Type": "application/json"},
                     data=json.dumps(payload),
                 )
 
-                # if response.status_code == 404:
-                #     doc_ref.document(webhook_object.id).delete()
-                #     return
+                if response.status_code == 404:
+                    self.db.document(f"webhooks/{webhook_object.id}").delete()
+                    return
 
     def listen(self):
         callback_done = threading.Event()
@@ -100,10 +100,13 @@ class Streamer:
         def on_snapshot(
             doc_snapshot: dict[firestore.firestore.DocumentSnapshot], changes, read_time
         ):
-            self.streams = []
+            self.streams = {}
             for doc in doc_snapshot:
                 doc_dict = doc.to_dict()
-                self.streams.append(
+                if not doc_dict["subreddit"] in self.streams:
+                    self.streams[doc_dict["subreddit"]] = []
+
+                self.streams[doc_dict["subreddit"]].append(
                     WebhookObject(
                         doc_dict["subreddit"],
                         doc_dict["channel_id"],
@@ -113,16 +116,13 @@ class Streamer:
                     )
                 )
 
-                if doc_dict["subreddit"] not in self.watched_subreddits:
-                    self.watched_subreddits.append(doc_dict["subreddit"])
+            if self._listen_to_reddit_thread:
+                self._threads_to_kill.append(self._listen_to_reddit_thread.name)
 
-            if self._listen_to_reddit_process is not None:
-                self._listen_to_reddit_process_quit = True
-
-            self._listen_to_reddit_process = threading.Thread(
+            self._listen_to_reddit_thread = threading.Thread(
                 target=self._listen_to_reddit,
             )
-            self._listen_to_reddit_process.start()
+            self._listen_to_reddit_thread.start()
 
             callback_done.set()
 
