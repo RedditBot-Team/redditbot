@@ -1,7 +1,7 @@
 import os
 import random
 from datetime import datetime
-
+import logging
 import asyncpraw as praw
 import discord
 from firebase_admin import credentials
@@ -127,43 +127,50 @@ def create_user_embed(bot, user, username):
 
 
 def create_submission_embed(submission):
-    # create our sub embed
-    embed = discord.Embed(
-        title=f"{submission.title}",
-        description=f"""{f'{submission.selftext[:100]}...' if len(submission.selftext) > 100 else submission.selftext}
-                    {f'*Is original content*' if submission.is_original_content else f''}
-                    {f'*Is edited*' if submission.edited else f''}""",
-        timestamp=datetime.utcfromtimestamp(float(submission.created_utc)),
-        url=f"https://reddit.com{submission.permalink}",
-    )
-
-    embed.set_author(
-        name=f"{submission.author.name} posted on r/{submission.subreddit.display_name}",
-        icon_url=submission.author.icon_img,
-        url=f"https://reddit.com/u/{submission.author.name}",
-    )
-
-    if submission.url.endswith((".gif", ".png", ".jpg", ".jpeg")):
-        embed.set_image(url=submission.url)
-
-    embed.set_footer(text=f"post id: {submission.id}")
-
-    embed.set_thumbnail(url=submission.subreddit.icon_img)
-
-    # Add some fields
-    embed.add_field(
-        name="Upvotes",
-        value=f"{submission.score} (ratio {submission.upvote_ratio}%)",
-    )
-
-    if random.randint(0, 6) == 0:
-        embed.add_field(
-            name="Enjoy this feature?",
-            value="If you voted for me, my creator would really appreciate it\nhttps://redditbot.bwac.dev/vote",
-            inline=False,
+    try:
+        # create our sub embed
+        embed = discord.Embed(
+            title=f"{submission.title}",
+            description=f"""{f'{submission.selftext[:100]}...' if len(submission.selftext) > 100 else submission.selftext}
+                        {f'*Is original content*' if submission.is_original_content else f''}
+                        {f'*Is edited*' if submission.edited else f''}""",
+            timestamp=datetime.utcfromtimestamp(float(submission.created_utc)),
+            url=f"https://reddit.com{submission.permalink}",
         )
 
-    return embed
+        embed.set_author(
+            name=f"{submission.author.name} posted on r/{submission.subreddit.display_name}",
+            icon_url=submission.author.icon_img,
+            url=f"https://reddit.com/u/{submission.author.name}",
+        )
+
+        if submission.url.endswith((".gif", ".png", ".jpg", ".jpeg")):
+            embed.set_image(url=submission.url)
+
+        embed.set_footer(text=f"post id: {submission.id}")
+
+        embed.set_thumbnail(url=submission.subreddit.icon_img)
+
+        # Add some fields
+        embed.add_field(
+            name="Upvotes",
+            value=f"{submission.score} (ratio {submission.upvote_ratio}%)",
+        )
+
+        if random.randint(0, 6) == 0:
+            embed.add_field(
+                name="Enjoy this feature?",
+                value="If you voted for me, my creator would really appreciate it\nhttps://redditbot.bwac.dev/vote",
+                inline=False,
+            )
+
+        return embed
+    except:
+        logging.error(f"Error making '{submission.title}' in sub {submission.subreddit}")
+        return discord.Embed(
+                title="An error happened creating the submission embed. Oh dear",
+                url="https://discord.com/invite/JAzBJZp",
+            )
 
 
 def create_unpermitted_error_embed(target):
