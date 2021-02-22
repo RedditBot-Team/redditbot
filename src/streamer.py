@@ -53,6 +53,7 @@ class Streamer:
         self.watched_subreddits = []
 
     def _listen_to_reddit(self):
+        # Combine all the subreddits into a string that reddit likes.
         for submission in self.reddit.subreddit(
             "+".join(list(self.streams.keys()))
         ).stream.submissions(skip_existing=True):
@@ -62,6 +63,7 @@ class Streamer:
                 self._threads_to_kill.remove(threading.current_thread().name)
                 return
 
+            # Create a submission embed
             embed = util.create_submission_embed(submission)
 
             # Collect all the webhooks we have to send too.
@@ -84,11 +86,13 @@ class Streamer:
                 )
 
                 if "nsfw" not in channel_info_response.json():
+                    # Change the embed
                     if submission.over_18:
                         payload["embeds"] = [util.create_nsfw_content_embed().to_dict()]
                     elif submission.subreddit.over18:
                         payload["embeds"] = [util.create_nsfw_content_embed().to_dict()]
 
+                # Send the embeds.
                 response = requests.request(
                     "POST",
                     webhook_object.url,
@@ -97,6 +101,7 @@ class Streamer:
                 )
 
                 if response.status_code == 404:
+                    # Delete if this webhook doesnt exist
                     self.db.document(f"webhooks/{webhook_object.id}").delete()
                     return
 
@@ -113,9 +118,12 @@ class Streamer:
 
                 sub = self.reddit.subreddit(doc_dict["subreddit"])
 
+                # Make everything lowercase so we have no key errors.
                 if not sub.display_name.lower() in self.streams:
+                    # Make a new key for every new subreddit detected.
                     self.streams[sub.display_name.lower()] = []
 
+                # Create a webhook object class and add it to the streams dict under the webhook's subreddit
                 self.streams[sub.display_name.lower()].append(
                     WebhookObject(
                         doc_dict["subreddit"],
@@ -126,18 +134,24 @@ class Streamer:
                     )
                 )
 
+            # If this is isn't the first time we are getting a snapshot.
             if self._listen_to_reddit_thread:
+                # Tell the old thread to kill itself.
                 self._threads_to_kill.append(self._listen_to_reddit_thread.name)
 
+            # Create a new reddit watching thread
             self._listen_to_reddit_thread = threading.Thread(
                 target=self._listen_to_reddit,
             )
+            # Start it.
             self._listen_to_reddit_thread.start()
 
+            # What this does? I have no idea. It just works if its there.
             callback_done.set()
 
         doc_ref = self.db.collection("webhooks")
 
+        # I have no idea what this does. It just works. OK.
         doc_watch = doc_ref.on_snapshot(on_snapshot)
         while True:
             try:
