@@ -91,7 +91,7 @@ class Streamer:
 
                 response = requests.request(
                     "POST",
-                    f"https://discord.com/api/webhooks/{webhook_object.id}/{webhook_object.token}",
+                    webhook_object.url,
                     headers={"Content-Type": "application/json"},
                     data=json.dumps(payload),
                 )
