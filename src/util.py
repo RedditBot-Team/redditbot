@@ -2,8 +2,8 @@ import os
 import random
 from datetime import datetime
 
-import discord
 import asyncpraw as praw
+import discord
 from firebase_admin import credentials
 
 

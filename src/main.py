@@ -1,14 +1,15 @@
 import logging
 import os
 import threading
+
 import discord
 import firebase_admin
 from discord.ext import commands
 from discord_slash import SlashCommand
 
+import streamer
 import util
 from cogs import events, subreddit, subscribe, user
-import streamer
 
 bot = commands.AutoShardedBot(command_prefix="/", help_command=None)
 slash = SlashCommand(bot)

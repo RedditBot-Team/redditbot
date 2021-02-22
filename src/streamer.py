@@ -1,11 +1,13 @@
 import json
 import os
-import threading
-import praw
-import firebase_admin
-import requests
-from firebase_admin import firestore, credentials
 import queue
+import threading
+
+import firebase_admin
+import praw
+import requests
+from firebase_admin import credentials, firestore
+
 import util
 
 
