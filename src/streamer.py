@@ -6,7 +6,7 @@ import threading
 import firebase_admin
 import praw
 import requests
-from firebase_admin import credentials, firestore
+from firebase_admin import firestore
 
 import util
 
