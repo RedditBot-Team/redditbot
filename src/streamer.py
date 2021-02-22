@@ -62,15 +62,18 @@ class Streamer:
 
             embed = util.create_submission_embed(submission)
 
-            payload = {
-                "embeds": [embed.to_dict()],
-                "avatar_url": f"https://cdn.discordapp.com/avatars/{self.user['id']}/{self.user['avatar']}",
-                "username": f"{self.user['username']} {submission.subreddit.display_name} Subscription",
-            }
-
+            # Collect all the webhooks we have to send too.
             for webhook_object in self.streams[
                 submission.subreddit.display_name.lower()
             ]:
+                # Make payloads for the webhook request
+                payload = {
+                    "embeds": [embed.to_dict()],
+                    "avatar_url": f"https://cdn.discordapp.com/avatars/{self.user['id']}/{self.user['avatar']}",
+                    "username": f"{self.user['username']} {submission.subreddit.display_name} Subscription",
+                }
+
+                # NSFW checks.
                 channel_info_response = requests.request(
                     "GET",
                     f"https://discord.com/api/channels/{webhook_object.channel_id}",
