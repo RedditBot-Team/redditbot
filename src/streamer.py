@@ -61,7 +61,6 @@ class Streamer:
         ).stream.submissions(skip_existing=True):
             # Quit if we have too.
             if threading.current_thread().name in self._threads_to_kill:
-
                 self._threads_to_kill.remove(threading.current_thread().name)
                 return
 
