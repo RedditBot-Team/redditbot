@@ -1,7 +1,8 @@
+import logging
 import os
 import random
 from datetime import datetime
-import logging
+
 import asyncpraw as praw
 import discord
 from firebase_admin import credentials
