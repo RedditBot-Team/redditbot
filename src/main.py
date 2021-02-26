@@ -1,7 +1,6 @@
 import logging
 import os
 import threading
-
 import discord
 import firebase_admin
 from discord.ext import commands
@@ -48,18 +47,6 @@ async def __help(ctx):
     )
 
 
-streamer_instance = streamer.Streamer(
-    437439562386505730,
-    os.environ["REDDITBOT_TOKEN"],
-    os.environ["REDDIT_ID"],
-    os.environ["REDDIT_SECRET"],
-)
-
-streamer_listener = threading.Thread(
-    target=streamer_instance.listen,
-)
-streamer_listener.start()
-
 cogs = [
     subreddit.Subreddit(bot),
     user.User(bot),
@@ -70,12 +57,25 @@ cogs = [
 for cog in cogs:
     bot.add_cog(cog)
 
+if __name__ == '__main__':
+    streamer_instance = streamer.Streamer(
+        437439562386505730,
+        os.environ["REDDITBOT_TOKEN"],
+        os.environ["REDDIT_ID"],
+        os.environ["REDDIT_SECRET"],
+    )
 
-if int(os.environ["PRODUCTION"]) == 1:
-    logging.info("Logging in as production")
+    streamer_listener = threading.Thread(
+        target=streamer_instance.listen,
+        args=()
+    )
+    streamer_listener.start()
 
-    bot.run(os.environ["REDDITBOT_TOKEN"])
-else:
-    logging.info("Logging in as dev")
+    if int(os.environ["PRODUCTION"]) == 1:
+        logging.info("Logging in as production")
 
-    bot.run(os.environ["DEV_TOKEN"])
+        bot.run(os.environ["REDDITBOT_TOKEN"])
+    else:
+        logging.info("Logging in as dev")
+
+        bot.run(os.environ["DEV_TOKEN"])

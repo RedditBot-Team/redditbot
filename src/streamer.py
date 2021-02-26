@@ -159,13 +159,3 @@ class Streamer:
                 changes = doc_changes.get(timeout=1)
             except queue.Empty:
                 changes = None
-
-
-if __name__ == "__main__":
-    streamer = Streamer(
-        client_id=437439562386505730,
-        client_token=os.environ["REDDITBOT_TOKEN"],
-        reddit_id=os.environ["REDDIT_ID"],
-        reddit_secret=os.environ["REDDIT_SECRET"],
-    )
-    streamer.listen()
