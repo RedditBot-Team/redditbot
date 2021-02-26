@@ -69,7 +69,7 @@ def create_cant_find_embed(bot, name: str):
 
 def create_nsfw_content_embed():
     errorEmbed = discord.Embed(
-        title="NSFW Content is only allowed in a NSFW channel.",
+        title=":x: NSFW Content is only allowed in a NSFW channel.",
         url="https://bwac.gitbook.io/redditbot/topics/nsfw",
     )
     errorEmbed.set_author(
