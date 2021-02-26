@@ -1,11 +1,13 @@
 import logging
 import os
 import threading
+import time
 
 import discord
 import firebase_admin
 from discord.ext import commands
 from discord_slash import SlashCommand
+from firebase_admin import firestore
 
 import streamer
 import util
@@ -47,6 +49,21 @@ async def __help(ctx):
         "https://redditbot.bwac.dev/invite\nIf it keeps happening try again later "
     )
 
+
+@bot.command(name="list")
+async def list(ctx):
+    if ctx.author.id == 408355239108935681:
+        db = firebase_admin.firestore.client()
+        subs = []
+        for i in db.collection("webhooks").get():
+            if i.to_dict()["subreddit"] in subs:
+                continue
+            await ctx.channel.send(i.to_dict()["subreddit"])
+            subs.append(i.to_dict()["subreddit"])
+    else:
+        mes = await ctx.channel.send("You found a secret!")
+        time.sleep(2)
+        await mes.delete()
 
 cogs = [
     subreddit.Subreddit(bot),
