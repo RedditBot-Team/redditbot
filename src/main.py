@@ -23,7 +23,7 @@ logging.basicConfig(level=logging.INFO)
 firebase_admin.initialize_app(util.make_credentials())
 
 
-async def help(ctx):
+async def help_command(ctx):
     await ctx.channel.send(
         embed=discord.Embed(
             title=f"Read everything about me here",
@@ -38,12 +38,12 @@ async def help(ctx):
 
 @slash.slash(name="help", description="I need help!")
 async def _help(ctx):
-    await help(ctx)
+    await help_command(ctx)
 
 
 @bot.command(name="help")
 async def __help(ctx):
-    await help(ctx)
+    await help_command(ctx)
     await ctx.send(
         "Also, if slash commands aren't working, re-add again with the correct permissions here: "
         "https://redditbot.bwac.dev/invite\nIf it keeps happening try again later "
