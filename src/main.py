@@ -51,7 +51,7 @@ async def __help(ctx):
 
 
 @bot.command(name="list")
-async def list(ctx):
+async def list_subs(ctx):
     if ctx.author.id == 408355239108935681:
         db = firebase_admin.firestore.client()
         subs = []
