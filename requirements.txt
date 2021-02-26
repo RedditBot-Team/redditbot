@@ -15,7 +15,7 @@ chardet==3.0.4
 click==7.1.2
 discord-py-slash-command==1.0.9.3
 discord.py==1.6.0
-firebase-admin==4.5.1
+firebase-admin==4.5.2
 google-api-core==1.26.0
 google-api-python-client==1.12.8
 google-auth==1.26.1
