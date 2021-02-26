@@ -59,21 +59,21 @@ for cog in cogs:
     bot.add_cog(cog)
 
 if __name__ == '__main__':
-    streamer_instance = streamer.Streamer(
-        437439562386505730,
-        os.environ["REDDITBOT_TOKEN"],
-        os.environ["REDDIT_ID"],
-        os.environ["REDDIT_SECRET"],
-    )
-
-    streamer_listener = threading.Thread(
-        target=streamer_instance.listen,
-        args=()
-    )
-    streamer_listener.start()
-
     if int(os.environ["PRODUCTION"]) == 1:
         logging.info("Logging in as production")
+
+        streamer_instance = streamer.Streamer(
+            437439562386505730,
+            os.environ["REDDITBOT_TOKEN"],
+            os.environ["REDDIT_ID"],
+            os.environ["REDDIT_SECRET"],
+        )
+
+        streamer_listener = threading.Thread(
+            target=streamer_instance.listen,
+            args=()
+        )
+        streamer_listener.start()
 
         bot.run(os.environ["REDDITBOT_TOKEN"])
     else:
