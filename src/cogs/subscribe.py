@@ -218,9 +218,7 @@ class Subscribe(commands.Cog, name="Subscribe"):
         await text_channel.send(
             embed=discord.Embed(
                 title=f":white_check_mark: Nice, this channel will start receiving daily summaries of the top posts "
-                f"from `{subreddit_name}`",
-                description=f"If {subreddit_name} is a subreddit RedditBot hasn't seen before, it can take up to 5 "
-                f"minutes",
+                f"from `{subreddit_name}` every day.",
                 timestamp=datetime.utcnow(),
             ),
         )
