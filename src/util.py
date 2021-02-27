@@ -172,7 +172,7 @@ def create_submission_embed(submission):
         )
         return discord.Embed(
             title="An error happened creating the submission embed. Oh dear",
-            url="https://discord.com/invite/JAzBJZp",
+            # url="https://discord.com/invite/JAzBJZp",
         )
 
 
