@@ -131,7 +131,7 @@ class Subscribe(commands.Cog, name="Subscribe"):
     @cog_ext.cog_subcommand(
         base="subscriptions",
         name="summary",
-        description="Get a daily summary of the top posts in a channel (UTC time)",
+        description="Get a daily summary of the top posts in a channel",
         options=[
             manage_commands.create_option(
                 name="text_channel",
