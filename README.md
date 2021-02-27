@@ -16,7 +16,7 @@
 
 (It can even see other server memebers reddit accounts)
 
-![example](https://i.imgur.com/ReUlGOH.png)
+![example](https://i.imgur.com/a9oCTwW.png)
 
 ### RedditBot can see info on subreddits, too!
 ![example](https://i.imgur.com/4dpAehE.png)
