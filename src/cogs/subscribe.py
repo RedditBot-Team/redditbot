@@ -1,8 +1,12 @@
+import json
+import os
 from datetime import datetime
 
 import discord
 import firebase_admin
-from discord.ext import commands
+import praw
+import requests
+from discord.ext import commands, tasks
 from discord_slash import SlashCommand, SlashContext, cog_ext
 from discord_slash.utils import manage_commands
 from firebase_admin import firestore
@@ -120,6 +124,103 @@ class Subscribe(commands.Cog, name="Subscribe"):
             embed=discord.Embed(
                 title=f":white_check_mark: Nice, this channel will start receiving new posts from `{subreddit_name}`",
                 description=f"If {subreddit_name} is a subreddit RedditBot hasn't seen before, it can take up to 5 minutes",
+                timestamp=datetime.utcnow(),
+            ),
+        )
+
+    @cog_ext.cog_subcommand(
+        base="subscriptions",
+        name="summary",
+        description="Get a daily summary of the top posts in a channel (UTC time)",
+        options=[
+            manage_commands.create_option(
+                name="text_channel",
+                description="The channel to subscribe summaries the subreddit to.",
+                option_type=7,
+                required=True,
+            ),
+            manage_commands.create_option(
+                name="subreddit",
+                description="The name of the subreddit.",
+                option_type=3,
+                required=True,
+            ),
+        ],
+    )
+    async def _summary(self, ctx: SlashContext, text_channel, subreddit):
+        # Make sure our token doesnt disappear
+        await ctx.respond()
+
+        # make a loading screen
+        message = await ctx.send(embed=util.create_loading_embed(self.bot))
+
+        if not ctx.guild.owner_id == ctx.author_id:
+            await message.edit(
+                embed=discord.Embed(
+                    title="Only a server owner can use this command",
+                    url="https://bwac.gitbook.io/redditbot/get-info/subscriptions#creating-a-stream",
+                )
+            )
+            return
+
+        if not isinstance(text_channel, discord.TextChannel):
+            await message.edit(
+                embed=util.create_wrong_channel_type("Text Channel", text_channel)
+            )
+            return
+
+        # Make sure our subreddit is formatted nicely
+        # AKA remove 'r/'
+        subreddit_name = util.get_formatted_subreddit_name(subreddit)
+
+        # Create our reddit instance
+        reddit = util.create_reddit_instance()
+
+        # Grab our reddit details
+        try:
+            subreddit = await reddit.subreddit(subreddit_name, fetch=True)
+        except:
+            # Sub doesnt exist
+            await message.edit(
+                embed=util.create_cant_find_embed(self.bot, subreddit_name)
+            )
+            return
+
+        # Check that we are safe for nsfw content
+        if subreddit.over18 and not text_channel.is_nsfw():
+            await message.delete()
+
+            await text_channel.send(embed=util.create_nsfw_content_embed(self.bot))
+            return
+
+        db = firebase_admin.firestore.client()
+
+        try:
+            webhook = await text_channel.create_webhook(
+                name=f"{str(subreddit_name)} - RedditBot summary stream"
+            )
+        except discord.errors.Forbidden:
+            await message.delete()
+            await ctx.send(":x: I need the perms to manage webhooks.")
+            return
+
+        db.document(f"summaries/{str(webhook.id)}").set(
+            {
+                "guild_id": webhook.guild_id,
+                "channel_id": webhook.channel_id,
+                "token": webhook.token,
+                "subreddit": subreddit_name,
+            }
+        )
+
+        await message.delete()
+
+        await text_channel.send(
+            embed=discord.Embed(
+                title=f":white_check_mark: Nice, this channel will start receiving daily summaries of the top posts "
+                f"from `{subreddit_name}`",
+                description=f"If {subreddit_name} is a subreddit RedditBot hasn't seen before, it can take up to 5 "
+                f"minutes",
                 timestamp=datetime.utcnow(),
             ),
         )

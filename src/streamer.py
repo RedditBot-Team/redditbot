@@ -1,12 +1,16 @@
+import datetime
 import json
 import os
 import queue
 import threading
+import time
 import uuid
 
+import discord
 import firebase_admin
 import praw
 import requests
+import schedule
 from firebase_admin import firestore
 
 import util
@@ -23,6 +27,113 @@ class WebhookObject:
     @property
     def url(self):
         return f"https://discord.com/api/webhooks/{self.id}/{self.token}"
+
+
+def _summary():
+    db = firestore.client()
+
+    summary_collection = db.collection("summaries")
+    reddit = praw.Reddit(
+        client_id=os.environ["REDDIT_ID"],
+        client_secret=os.environ["REDDIT_SECRET"],
+        user_agent="RedditBot summary streamer",
+    )
+
+    user = requests.request(
+        "GET",
+        "https://discord.com/api/users/@me",
+        headers={"Authorization": f"Bot {os.environ['REDDITBOT_TOKEN']}"},
+        data={},
+    ).json()
+
+    subreddits = {}
+    for webhook in summary_collection.get():
+        doc_dict = webhook.to_dict()
+
+        sub = reddit.subreddit(webhook.to_dict()["subreddit"])
+        if sub.display_name.lower() not in subreddits:
+            subreddits[sub.display_name.lower()] = []
+        subreddits[sub.display_name.lower()].append(
+            WebhookObject(
+                doc_dict["subreddit"],
+                doc_dict["channel_id"],
+                doc_dict["guild_id"],
+                webhook.id,
+                doc_dict["token"],
+            )
+        )
+
+    for subreddit in subreddits:
+        sub = reddit.subreddit(subreddit)
+        description = ""
+        nsfw_description = ""
+        for submission in sub.top(limit=5, time_filter="all"):
+            # Huge strings!
+            submission_string = f"**[{submission.title}](https://reddit.com{submission.url})**\n{submission.score} upvotes, {submission.num_comments} comments. By [{submission.author.name}](https://reddit.com/u/{submission.author.name})\n\n"
+
+            nsfw_description += submission_string
+            if submission.over_18:
+                description += "*nsfw content blocked*\n\n"
+            else:
+                description += submission_string
+
+        for webhook in subreddits[subreddit]:
+            # Send the embeds.
+
+            channel_info_response = requests.request(
+                "GET",
+                f"https://discord.com/api/channels/{webhook.channel_id}",
+                headers={"Authorization": f"Bot {os.environ['REDDITBOT_TOKEN']}"},
+                data={},
+            ).json()
+
+            embed = None
+            if channel_info_response["nsfw"]:
+                embed = discord.Embed(
+                    title=f"{sub.display_name}'s top posts today:",
+                    timestamp=datetime.datetime.utcnow(),
+                    description=nsfw_description,
+                    url=f"https://reddit.com/r/{sub.display_name}",
+                )
+            else:
+                embed = discord.Embed(
+                    title=f"{sub.display_name}'s top posts today:",
+                    timestamp=datetime.datetime.utcnow(),
+                    description=description,
+                    url=f"https://reddit.com/r/{sub.display_name}",
+                )
+
+            embed.set_author(
+                name=f"{user['username']}",
+                icon_url=f"https://cdn.discordapp.com/avatars/{user['id']}/{user['avatar']}",
+                url=f"https://redditbot.bwac.dev/",
+            )
+            embed.set_thumbnail(url=sub.icon_img)
+
+            payload = {
+                "embeds": [embed.to_dict()],
+                "avatar_url": f"https://cdn.discordapp.com/avatars/{user['id']}/{user['avatar']}",
+                "username": f"{user['username']} {sub.display_name} Subscription",
+            }
+
+            response = requests.request(
+                "POST",
+                webhook.url,
+                headers={"Content-Type": "application/json"},
+                data=json.dumps(payload),
+            )
+
+            if response.status_code == 404:
+                # Delete if this webhook doesnt exist
+                db.document(f"summaries/{webhook.id}").delete()
+                return
+
+
+def schedule_summary():
+    schedule.every().day.at("00:00").do(_summary)
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
 
 
 class Streamer:

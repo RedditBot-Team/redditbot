@@ -104,8 +104,14 @@ if __name__ == "__main__":
         streamer_listener = threading.Thread(target=streamer_instance.listen, args=())
         streamer_listener.start()
 
+        summary_listener = threading.Thread(target=streamer.schedule_summary)
+        summary_listener.start()
+
         bot.run(os.environ["REDDITBOT_TOKEN"])
     else:
         logging.info("Logging in as dev")
+
+        summary_listener = threading.Thread(target=streamer.schedule_summary)
+        summary_listener.start()
 
         bot.run(os.environ["DEV_TOKEN"])
