@@ -143,8 +143,7 @@ class Streamer:
 
             # Create a new reddit watching thread
             self._listen_to_reddit_thread = threading.Thread(
-                target=self._listen_to_reddit,
-                name=str(uuid.uuid4())
+                target=self._listen_to_reddit, name=str(uuid.uuid4())
             )
             # Start it.
             self._listen_to_reddit_thread.start()

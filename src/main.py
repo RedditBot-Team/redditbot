@@ -79,6 +79,7 @@ async def list_subs(ctx):
         time.sleep(2)
         await mes.delete()
 
+
 cogs = [
     subreddit.Subreddit(bot),
     user.User(bot),
@@ -89,7 +90,7 @@ cogs = [
 for cog in cogs:
     bot.add_cog(cog)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     if int(os.environ["PRODUCTION"]) == 1:
         logging.info("Logging in as production")
 
@@ -100,10 +101,7 @@ if __name__ == '__main__':
             os.environ["REDDIT_SECRET"],
         )
 
-        streamer_listener = threading.Thread(
-            target=streamer_instance.listen,
-            args=()
-        )
+        streamer_listener = threading.Thread(target=streamer_instance.listen, args=())
         streamer_listener.start()
 
         bot.run(os.environ["REDDITBOT_TOKEN"])

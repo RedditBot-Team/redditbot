@@ -167,11 +167,13 @@ def create_submission_embed(submission):
 
         return embed
     except:
-        logging.error(f"Error making '{submission.title}' in sub {submission.subreddit}")
+        logging.error(
+            f"Error making '{submission.title}' in sub {submission.subreddit}"
+        )
         return discord.Embed(
-                title="An error happened creating the submission embed. Oh dear",
-                url="https://discord.com/invite/JAzBJZp",
-            )
+            title="An error happened creating the submission embed. Oh dear",
+            url="https://discord.com/invite/JAzBJZp",
+        )
 
 
 def create_unpermitted_error_embed(target):
