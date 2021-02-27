@@ -1,5 +1,9 @@
 ## RedditBot can grab all sorts of info
 
+[![Discord Bots](https://top.gg/api/widget/servers/437439562386505730.svg)](https://top.gg/bot/437439562386505730)
+[![Discord Bots](https://top.gg/api/widget/upvotes/437439562386505730.svg)](https://top.gg/bot/437439562386505730)
+
+
 ![Lines of code](https://img.shields.io/tokei/lines/github/Redditbot-Team/redditbot?label=lines&style=for-the-badge)
 ![GitHub repo size](https://img.shields.io/github/repo-size/Redditbot-Team/redditbot?label=size&style=for-the-badge)
 ![Codacy grade](https://img.shields.io/codacy/grade/1efe20f315c243a2b9ae259aa7176ac1?label=quality&style=for-the-badge)
