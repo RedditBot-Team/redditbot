@@ -111,7 +111,4 @@ if __name__ == "__main__":
     else:
         logging.info("Logging in as dev")
 
-        summary_listener = threading.Thread(target=streamer.schedule_summary)
-        summary_listener.start()
-
         bot.run(os.environ["DEV_TOKEN"])
