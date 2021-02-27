@@ -15,6 +15,9 @@
 ### RedditBot can subscribe a subreddit to your channel, to receive live posts
 ![subscribe](https://raw.githubusercontent.com/RedditBot-Team/redditbot/main/branding/demo_images/subscribe.png)
 
+### Get a daily summary of the top posts
+![subscribe](https://raw.githubusercontent.com/RedditBot-Team/redditbot/main/branding/demo_images/summary.png)
+
 ### RedditBot can see info on reddit users
 ![user](https://raw.githubusercontent.com/RedditBot-Team/redditbot/main/branding/demo_images/user.png)
 
