@@ -1,3 +1,5 @@
+import base64
+import json
 import logging
 import os
 import threading
@@ -12,6 +14,18 @@ from firebase_admin import firestore
 import streamer
 import util
 from cogs import events, subreddit, subscribe, user
+
+# Super hard to understand but it makes it work
+with open("firebase.json", "w") as outfile:
+    outfile.write(
+        json.dumps(
+            json.loads(
+                str(base64.b64decode(os.environ["FIREBASE"].encode("utf-8")), "utf-8"),
+                strict=False,
+            ),
+            indent=4,
+        )
+    )
 
 bot = commands.AutoShardedBot(command_prefix="/", help_command=None)
 slash = SlashCommand(bot)

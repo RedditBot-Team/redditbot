@@ -9,7 +9,7 @@ from firebase_admin import credentials
 
 
 def make_credentials():
-    return credentials.Certificate("redditbot-discord-firebase-adminsdk.json")
+    return credentials.Certificate("firebase.json")
 
 
 def get_formatted_subreddit_name(str: str):
