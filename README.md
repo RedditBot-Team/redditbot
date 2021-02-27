@@ -10,6 +10,9 @@
 ![GitHub top language](https://img.shields.io/github/languages/top/Redditbot-Team/redditbot?style=for-the-badge)
 ![GitHub](https://img.shields.io/github/license/redditbot-team/redditbot?style=for-the-badge)
 
+
+[![Lint](https://github.com/RedditBot-Team/redditbot/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/RedditBot-Team/redditbot/actions/workflows/main.yml)
+
 ### [Read how to use all the commands here, or use the /help command](https://bwac.gitbook.io/redditbot/get-info/commands)
 
 ### RedditBot can subscribe a subreddit to your channel, to receive live posts
