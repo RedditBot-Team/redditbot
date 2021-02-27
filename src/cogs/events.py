@@ -4,7 +4,6 @@ import random
 
 import discord
 import firebase_admin
-import requests
 from discord.ext import commands
 from firebase_admin import firestore
 
