@@ -15,18 +15,18 @@
 
 ### [Read how to use all the commands here, or use the /help command](https://bwac.gitbook.io/redditbot/get-info/commands)
 
-### RedditBot can subscribe a subreddit to your channel, to receive live posts
+### [RedditBot can subscribe a subreddit to your channel, to receive live posts](https://bwac.gitbook.io/redditbot/get-info/subscriptions)
 ![subscribe](https://raw.githubusercontent.com/RedditBot-Team/redditbot/main/branding/demo_images/subscribe.png)
 
 ### Get a daily summary of the top posts
 ![subscribe](https://raw.githubusercontent.com/RedditBot-Team/redditbot/main/branding/demo_images/summary.png)
 
-### RedditBot can see info on reddit users
+### [RedditBot can see info on reddit users](https://bwac.gitbook.io/redditbot/get-info/user)
 ![user](https://raw.githubusercontent.com/RedditBot-Team/redditbot/main/branding/demo_images/user.png)
 
-(It can even see other server memebers reddit accounts)
+[(It can even see other server memebers reddit accounts)](https://bwac.gitbook.io/redditbot/get-info/user/member)
 
 ![members](https://raw.githubusercontent.com/RedditBot-Team/redditbot/main/branding/demo_images/member.png)
 
-### RedditBot can see info on subreddits, too!
+### [RedditBot can see info on subreddits, too!](https://bwac.gitbook.io/redditbot/get-info/subreddit)
 ![subreddit](https://raw.githubusercontent.com/RedditBot-Team/redditbot/main/branding/demo_images/subreddit.png)
