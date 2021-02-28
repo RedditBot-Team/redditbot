@@ -13,7 +13,7 @@
 
 [![Lint](https://github.com/RedditBot-Team/redditbot/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/RedditBot-Team/redditbot/actions/workflows/main.yml)
 
-### [Read how to use all the commands here, or use the /help command](https://bwac.gitbook.io/redditbot/get-info/commands)
+[Read how to use all the commands here, or use the /help command](https://bwac.gitbook.io/redditbot/get-info/commands)
 
 ### [RedditBot can subscribe a subreddit to your channel, to receive live posts](https://bwac.gitbook.io/redditbot/get-info/subscriptions)
 ![subscribe](https://raw.githubusercontent.com/RedditBot-Team/redditbot/main/branding/demo_images/subscribe.png)
