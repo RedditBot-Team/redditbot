@@ -131,7 +131,7 @@ def _summary():
             if response.status_code == 404:
                 # Delete if this webhook doesnt exist
                 db.document(f"summaries/{webhook.id}").delete()
-                return
+                continue
 
 
 def schedule_summary():
