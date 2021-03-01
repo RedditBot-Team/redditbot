@@ -88,20 +88,25 @@ def _summary():
             ).json()
 
             embed = None
-            if channel_info_response["nsfw"]:
-                embed = discord.Embed(
-                    title=f"{sub.display_name}'s top posts today:",
-                    timestamp=datetime.datetime.utcnow(),
-                    description=nsfw_description,
-                    url=f"https://reddit.com/r/{sub.display_name}",
-                )
-            else:
-                embed = discord.Embed(
-                    title=f"{sub.display_name}'s top posts today:",
-                    timestamp=datetime.datetime.utcnow(),
-                    description=description,
-                    url=f"https://reddit.com/r/{sub.display_name}",
-                )
+            try:
+                if channel_info_response["nsfw"]:
+                    embed = discord.Embed(
+                        title=f"{sub.display_name}'s top posts today:",
+                        timestamp=datetime.datetime.utcnow(),
+                        description=nsfw_description,
+                        url=f"https://reddit.com/r/{sub.display_name}",
+                    )
+                else:
+                    embed = discord.Embed(
+                        title=f"{sub.display_name}'s top posts today:",
+                        timestamp=datetime.datetime.utcnow(),
+                        description=description,
+                        url=f"https://reddit.com/r/{sub.display_name}",
+                    )
+            except KeyError:
+                # Delete if this channel doesnt exist
+                db.document(f"summaries/{webhook.id}").delete()
+                continue
 
             embed.set_author(
                 name=f"{user['username']}",
