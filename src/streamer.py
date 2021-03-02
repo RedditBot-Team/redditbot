@@ -69,7 +69,7 @@ def _summary():
         nsfw_description = ""
         for submission in sub.top(limit=5, time_filter="day"):
             # Huge strings!
-            submission_string = f"**[{submission.title}](https://reddit.com{submission.url})**\n{submission.score} upvotes • {submission.num_comments} comments Posted by [{submission.author.name}](https://reddit.com/u/{submission.author.name})\n\n"
+            submission_string = f"**[{submission.title}](https://reddit.com/r/{subreddit}/comments/{submission.id})**\n{submission.score} upvotes • {submission.num_comments} comments Posted by [{submission.author.name}](https://reddit.com/u/{submission.author.name})\n\n"
 
             nsfw_description += submission_string
             if submission.over_18:
