@@ -5,7 +5,7 @@ import queue
 import threading
 import time
 import uuid
-import re
+
 import discord
 import firebase_admin
 import praw
@@ -174,7 +174,7 @@ class Streamer:
     def _listen_to_reddit(self):
         # Combine all the subreddits into a string that reddit likes.
         for submission in self.reddit.subreddit(
-            "+".join([re.sub(r'[^a-zA-Z0-9_]', '', x) for x in list(self.streams.keys())])
+            "+".join(list(self.streams.keys()))
         ).stream.submissions(skip_existing=True):
             # Quit if we have too.
             if threading.current_thread().name in self._threads_to_kill:
