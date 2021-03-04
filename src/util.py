@@ -42,7 +42,7 @@ def set_author(embed: discord.Embed, bot: discord.client):
 
 def create_loading_embed(bot):
     errorEmbed = discord.Embed(
-        title=f"{bot.get_emoji(650579775433474088)} Hang on, im loading..",
+        title=f":arrows_counterclockwise: Hang on, im loading..",
     )
     errorEmbed = set_author(errorEmbed, bot)
     return errorEmbed
