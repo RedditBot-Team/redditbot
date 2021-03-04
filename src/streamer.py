@@ -211,7 +211,7 @@ class Streamer:
                     elif submission.subreddit.over18:
                         payload["embeds"] = [util.create_nsfw_content_embed().to_dict()]
 
-                if random.randint(0, 5) == 0:
+                if random.randint(0, 9) == 0:
                     payload["embeds"].append(
                         discord.Embed(
                             title=f"Enjoying? It would be great if you voted!",
