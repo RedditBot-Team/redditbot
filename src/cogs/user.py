@@ -30,11 +30,7 @@ class User(commands.Cog, name="User"):
         ],
     )
     async def _username(self, ctx: SlashContext, username: str):
-        # Make sure our token doesnt disappear
         await ctx.respond()
-
-        # make a loading screen
-        message = await ctx.send(embed=util.create_loading_embed(self.bot))
 
         # Make sure our username is formatted nicely
         # AKA remove 'u/'
@@ -48,18 +44,18 @@ class User(commands.Cog, name="User"):
             user = await reddit.redditor(username, fetch=True)
         except:
             # Sub doesnt exist
-            await message.edit(embed=util.create_cant_find_embed(self.bot, username))
+            await ctx.send(embed=util.create_cant_find_embed(self.bot, username))
             return
 
         # Check that we are safe for nsfw content
         if user.subreddit["over_18"] and not ctx.channel.is_nsfw():
-            await message.edit(embed=util.create_nsfw_content_embed())
+            await ctx.send(embed=util.create_nsfw_content_embed())
             return
 
         # Make user display embed
         embed = util.create_user_embed(self.bot, user, username)
 
-        await message.edit(embed=embed)
+        await ctx.send(embed=embed)
 
     @cog_ext.cog_subcommand(
         name="member",
@@ -75,12 +71,6 @@ class User(commands.Cog, name="User"):
         ],
     )
     async def _whois(self, ctx: SlashContext, member):
-        # Make sure our token doesnt disappear
-        await ctx.respond()
-
-        # make a loading screen
-        message = await ctx.send(embed=util.create_loading_embed(self.bot))
-
         db = firebase_admin.firestore.client()
 
         doc_ref = db.collection(f"users").document(str(member.id))
@@ -100,7 +90,7 @@ class User(commands.Cog, name="User"):
             )
 
             if response.status_code == 401:
-                await message.edit(embed=util.create_unpermitted_error_embed(member))
+                await ctx.send(embed=util.create_unpermitted_error_embed(member))
                 return
 
             # Make sure we check for 0 connected reddit accounts
@@ -111,7 +101,6 @@ class User(commands.Cog, name="User"):
                     reddit_connections.append(connection)
 
             if len(reddit_connections) == 0:
-                await message.delete()
                 await ctx.send(
                     f"{member.name} doesnt have any connected reddit accounts"
                 )
@@ -143,7 +132,7 @@ class User(commands.Cog, name="User"):
                         user = await reddit.redditor(username, fetch=True)
                     except:
                         # Sub doesnt exist
-                        await message.edit(
+                        await ctx.send(
                             embed=util.create_cant_find_embed(self.bot, username)
                         )
                         return
@@ -156,8 +145,6 @@ class User(commands.Cog, name="User"):
                     # Make user display embed
                     embeds.append(util.create_user_embed(self.bot, user, username))
 
-            await message.delete()
-
             # Looks complicated, that's because it is
             # adds an 's' if there are more than 1 account
             await ctx.send(f"{member.name}'s account{'s' if len(embeds) > 1 else ''}:")
@@ -165,7 +152,7 @@ class User(commands.Cog, name="User"):
             for embed in embeds:
                 await ctx.send(embed=embed)
         else:
-            await message.edit(embed=util.create_unpermitted_error_embed(member))
+            await ctx.send(embed=util.create_unpermitted_error_embed(member))
 
 
 def setup(bot):

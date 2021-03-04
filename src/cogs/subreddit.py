@@ -22,11 +22,7 @@ class Subreddit(commands.Cog, name="Subreddit"):
         ],
     )
     async def _subreddit(self, ctx: SlashContext, subreddit: str):
-        # Make sure our token doesnt disappear
         await ctx.respond()
-
-        # make a loading screen
-        message = await ctx.send(embed=util.create_loading_embed(self.bot))
 
         # Make sure our subreddit name is formatted nicely
         # AKA remove 'r/'
@@ -40,20 +36,18 @@ class Subreddit(commands.Cog, name="Subreddit"):
             subreddit = await reddit.subreddit(subreddit_name, fetch=True)
         except:
             # Sub doesnt exist
-            await message.edit(
-                embed=util.create_cant_find_embed(self.bot, subreddit_name)
-            )
+            await ctx.send(embed=util.create_cant_find_embed(self.bot, subreddit_name))
             return
 
         # Check that we are safe for nsfw content
         if subreddit.over18 and not ctx.channel.is_nsfw():
-            await message.edit(embed=util.create_nsfw_content_embed())
+            await ctx.send(embed=util.create_nsfw_content_embed())
             return
 
         # Make subreddit display embed
         embed = util.create_subreddit_embed(self.bot, subreddit, subreddit_name)
 
-        await message.edit(embed=embed)
+        await ctx.send(embed=embed)
 
 
 def setup(bot):

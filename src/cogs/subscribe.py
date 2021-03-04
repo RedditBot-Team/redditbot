@@ -30,7 +30,7 @@ class Subscribe(commands.Cog, name="Subscribe"):
         description="Unsubscribe a channel from a subreddit",
     )
     async def _unsubscribe(self, ctx: SlashContext):
-        await ctx.respond(5)
+        await ctx.respond()
         await ctx.send(embed=util.create_delete_integration_embed(self.bot))
 
     @cog_ext.cog_subcommand(
@@ -53,14 +53,10 @@ class Subscribe(commands.Cog, name="Subscribe"):
         ],
     )
     async def _subscribe(self, ctx: SlashContext, text_channel, subreddit):
-        # Make sure our token doesnt disappear
         await ctx.respond()
 
-        # make a loading screen
-        message = await ctx.send(embed=util.create_loading_embed(self.bot))
-
         if not ctx.guild.owner_id == ctx.author_id:
-            await message.edit(
+            await ctx.send(
                 embed=discord.Embed(
                     title="Only a server owner can use this command",
                     url="https://bwac.gitbook.io/redditbot/get-info/subscriptions#creating-a-stream",
@@ -69,7 +65,7 @@ class Subscribe(commands.Cog, name="Subscribe"):
             return
 
         if not isinstance(text_channel, discord.TextChannel):
-            await message.edit(
+            await ctx.send(
                 embed=util.create_wrong_channel_type("Text Channel", text_channel)
             )
             return
@@ -86,15 +82,13 @@ class Subscribe(commands.Cog, name="Subscribe"):
             subreddit = await reddit.subreddit(subreddit_name, fetch=True)
         except:
             # Sub doesnt exist
-            await message.edit(
-                embed=util.create_cant_find_embed(self.bot, subreddit_name)
-            )
+            await ctx.send(embed=util.create_cant_find_embed(self.bot, subreddit_name))
             return
+
+        await ctx.respond()
 
         # Check that we are safe for nsfw content
         if subreddit.over18 and not text_channel.is_nsfw():
-            await message.delete()
-
             await text_channel.send(embed=util.create_nsfw_content_embed(self.bot))
             return
 
@@ -105,7 +99,6 @@ class Subscribe(commands.Cog, name="Subscribe"):
                 name=f"{str(subreddit_name)} - RedditBot stream"
             )
         except discord.errors.Forbidden:
-            await message.delete()
             await ctx.send(":x: I need the perms to manage webhooks.")
             return
 
@@ -118,11 +111,10 @@ class Subscribe(commands.Cog, name="Subscribe"):
             }
         )
 
-        await message.delete()
-
         await text_channel.send(
+            content=f"{ctx.author.mention}",
             embed=discord.Embed(
-                title=f":white_check_mark: Nice, this channel will start receiving new posts from `{subreddit_name}`",
+                title=f":white_check_mark: This channel will start receiving new posts from `{subreddit_name}`",
                 description=f"If {subreddit_name} is a subreddit RedditBot hasn't seen before, it can take up to 5 minutes",
                 timestamp=datetime.utcnow(),
             ),
@@ -148,14 +140,10 @@ class Subscribe(commands.Cog, name="Subscribe"):
         ],
     )
     async def _summary(self, ctx: SlashContext, text_channel, subreddit):
-        # Make sure our token doesnt disappear
         await ctx.respond()
 
-        # make a loading screen
-        message = await ctx.send(embed=util.create_loading_embed(self.bot))
-
         if not ctx.guild.owner_id == ctx.author_id:
-            await message.edit(
+            await ctx.send(
                 embed=discord.Embed(
                     title="Only a server owner can use this command",
                     url="https://bwac.gitbook.io/redditbot/get-info/subscriptions#creating-a-stream",
@@ -164,7 +152,7 @@ class Subscribe(commands.Cog, name="Subscribe"):
             return
 
         if not isinstance(text_channel, discord.TextChannel):
-            await message.edit(
+            await ctx.send(
                 embed=util.create_wrong_channel_type("Text Channel", text_channel)
             )
             return
@@ -181,15 +169,13 @@ class Subscribe(commands.Cog, name="Subscribe"):
             subreddit = await reddit.subreddit(subreddit_name, fetch=True)
         except:
             # Sub doesnt exist
-            await message.edit(
-                embed=util.create_cant_find_embed(self.bot, subreddit_name)
-            )
+            await ctx.send(embed=util.create_cant_find_embed(self.bot, subreddit_name))
             return
+
+        await ctx.respond()
 
         # Check that we are safe for nsfw content
         if subreddit.over18 and not text_channel.is_nsfw():
-            await message.delete()
-
             await text_channel.send(embed=util.create_nsfw_content_embed(self.bot))
             return
 
@@ -200,7 +186,6 @@ class Subscribe(commands.Cog, name="Subscribe"):
                 name=f"{str(subreddit_name)} - RedditBot summary stream"
             )
         except discord.errors.Forbidden:
-            await message.delete()
             await ctx.send(":x: I need the perms to manage webhooks.")
             return
 
@@ -213,11 +198,9 @@ class Subscribe(commands.Cog, name="Subscribe"):
             }
         )
 
-        await message.delete()
-
         await text_channel.send(
             embed=discord.Embed(
-                title=f":white_check_mark: Nice, this channel will start receiving daily summaries of the top posts "
+                title=f":white_check_mark: This channel will start receiving daily summaries of the top posts "
                 f"from `{subreddit_name}` every day.",
                 timestamp=datetime.utcnow(),
             ),

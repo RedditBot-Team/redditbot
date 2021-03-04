@@ -40,14 +40,6 @@ def set_author(embed: discord.Embed, bot: discord.client):
     )
 
 
-def create_loading_embed(bot):
-    errorEmbed = discord.Embed(
-        title=f":arrows_counterclockwise: Hang on, im loading..",
-    )
-    errorEmbed = set_author(errorEmbed, bot)
-    return errorEmbed
-
-
 def create_delete_integration_embed(bot):
     embed = discord.Embed(
         title=f"To delete your stream, delete your stream's integration",
