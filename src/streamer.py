@@ -1,7 +1,8 @@
-import datetime
+from datetime import datetime
 import json
 import os
 import queue
+import random
 import threading
 import time
 import uuid
@@ -209,6 +210,15 @@ class Streamer:
                         payload["embeds"] = [util.create_nsfw_content_embed().to_dict()]
                     elif submission.subreddit.over18:
                         payload["embeds"] = [util.create_nsfw_content_embed().to_dict()]
+
+                if random.randint(0, 5) == 0:
+                    payload["embeds"].append(
+                        discord.Embed(
+                            title=f"Enjoying? It would be great if you voted!",
+                            url="https://redditbot.bwac.dev/vote",
+                            timestamp=datetime.utcnow(),
+                        ).to_dict()
+                    )
 
                 # Send the embeds.
                 response = requests.request(
