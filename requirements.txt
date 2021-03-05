@@ -15,7 +15,7 @@ cffi==1.14.5
 chardet==3.0.4
 click==7.1.2
 dill==0.3.3
-discord-py-slash-command==1.0.9.3
+discord-py-slash-command==1.0.9.5
 discord.py==1.6.0
 firebase-admin==4.5.2
 google-api-core==1.26.0
@@ -28,7 +28,7 @@ google-cloud-storage==1.36.1
 google-crc32c==1.1.2
 google-resumable-media==1.2.0
 googleapis-common-protos==1.53.0
-grpcio==1.36.0
+grpcio==1.36.1
 httplib2==0.19.0
 humanize==3.2.0
 idna==3.1
@@ -43,7 +43,7 @@ pathspec==0.8.1
 praw==7.2.0
 prawcore==2.0.0
 proto-plus==1.13.0
-protobuf==3.15.3
+protobuf==3.15.5
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pycparser==2.20
