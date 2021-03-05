@@ -95,7 +95,7 @@ def _summary():
                         title=f"{sub.display_name}'s top posts today:",
                         timestamp=datetime.datetime.utcnow(),
                         description=nsfw_description,
-                        url=f"https://reddit.com/r/{sub.display_name}",
+                        url=f"https://reddit.com/r/{sub.display_name}/top/?t=day",
                     )
                 else:
                     embed = discord.Embed(
