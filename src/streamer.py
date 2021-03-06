@@ -93,14 +93,14 @@ def _summary():
                 if channel_info_response["nsfw"]:
                     embed = discord.Embed(
                         title=f"{sub.display_name}'s top posts today:",
-                        timestamp=datetime.datetime.utcnow(),
+                        timestamp=datetime.utcnow(),
                         description=nsfw_description,
                         url=f"https://reddit.com/r/{sub.display_name}/top/?t=day",
                     )
                 else:
                     embed = discord.Embed(
                         title=f"{sub.display_name}'s top posts today:",
-                        timestamp=datetime.datetime.utcnow(),
+                        timestamp=datetime.utcnow(),
                         description=description,
                         url=f"https://reddit.com/r/{sub.display_name}",
                     )
