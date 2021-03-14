@@ -38,6 +38,7 @@ firebase_admin.initialize_app(util.make_credentials())
 
 
 async def help_command(ctx):
+    await ctx.send(
         embed=discord.Embed(
             title=f"Read everything about me here",
             url="https://bwac.gitbook.io/redditbot/",
