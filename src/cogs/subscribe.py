@@ -85,8 +85,6 @@ class Subscribe(commands.Cog, name="Subscribe"):
             await ctx.send(embed=util.create_cant_find_embed(self.bot, subreddit_name))
             return
 
-        await ctx.respond()
-
         # Check that we are safe for nsfw content
         if subreddit.over18 and not text_channel.is_nsfw():
             await text_channel.send(embed=util.create_nsfw_content_embed(self.bot))
@@ -171,8 +169,6 @@ class Subscribe(commands.Cog, name="Subscribe"):
             # Sub doesnt exist
             await ctx.send(embed=util.create_cant_find_embed(self.bot, subreddit_name))
             return
-
-        await ctx.respond()
 
         # Check that we are safe for nsfw content
         if subreddit.over18 and not text_channel.is_nsfw():
