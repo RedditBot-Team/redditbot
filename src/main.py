@@ -38,7 +38,6 @@ firebase_admin.initialize_app(util.make_credentials())
 
 
 async def help_command(ctx):
-    await ctx.channel.send(
         embed=discord.Embed(
             title=f"Read everything about me here",
             url="https://bwac.gitbook.io/redditbot/",
@@ -52,6 +51,7 @@ async def help_command(ctx):
 
 @slash.slash(name="help", description="I need help!")
 async def _help(ctx):
+    await ctx.respond()
     await help_command(ctx)
 
 
