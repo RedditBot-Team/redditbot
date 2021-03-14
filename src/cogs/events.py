@@ -66,7 +66,7 @@ class Events(commands.Cog, name="Events"):
         await ctx.channel.send(
             embed=discord.Embed(
                 title="An error happened. Oh dear",
-                url="https://discord.com/invite/JAzBJZp",
+                #url="https://discord.com/invite/JAzBJZp",
             ),
         )
 
