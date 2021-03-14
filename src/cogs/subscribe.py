@@ -113,7 +113,6 @@ class Subscribe(commands.Cog, name="Subscribe"):
             content=f"{ctx.author.mention}",
             embed=discord.Embed(
                 title=f":white_check_mark: This channel will start receiving new posts from `{subreddit_name}`",
-                description=f"If {subreddit_name} is a subreddit RedditBot hasn't seen before, it can take up to 5 minutes",
                 timestamp=datetime.utcnow(),
             ),
         )
